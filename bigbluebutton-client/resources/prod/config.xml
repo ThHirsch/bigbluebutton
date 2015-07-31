@@ -1,0 +1,177 @@
+<?xml version="1.0" ?>
+<config>
+	<localeversion suppressWarning="false">0.9.0</localeversion>
+	<version>265</version>
+	<help url="content/help/WebTV_Help.pdf"/>
+	<javaTest url="http://scgncnf01.delvag.org/testjava.html"/>
+	<porttest host="scgncnf01.delvag.org" application="video/portTest" timeout="3000"/>
+	<bwMon server="scgncnf01.delvag.org" application="video/bwTest"/>
+	<application uri="rtmp://scgncnf01.delvag.org/bigbluebutton" host="http://scgncnf01.delvag.org/bigbluebutton/api/enter"/>
+	<language userSelectionEnabled="true" />
+	<skinning enabled="true" url="http://scgncnf01.delvag.org/client/branding/css/BBBDefault.css.swf" />
+	<shortcutKeys showButton="true" />
+	<browserVersions chrome="41" firefox="36" flash="17" java="1.7.0_51" />
+
+	<layout defaultLayout="bbb.layout.name.defaultlayout"
+			showLogButton="true"
+			showToolbar="true"
+			showFooter="true"
+			showMeetingName="true"
+			showHelpButton="true"
+			showLogoutWindow="true"
+			showLayoutTools="true"
+			confirmLogout="true"
+			showRecordingNotification="true"
+			showNetworkMonitor="true" 
+	/>
+
+	<meeting muteOnStart="false" />
+
+	<lock 	disableCamForLockedUsers="false"
+			disableMicForLockedUsers="false"
+			disablePrivateChatForLockedUsers="false"
+			disablePublicChatForLockedUsers="false"
+			lockLayoutForLockedUsers="false"
+			lockOnJoin="false"
+			lockOnJoinConfigurable="true"
+	/>
+
+	<modules>
+		<module name="ChatModule" url="http://scgncnf01.delvag.org/client/ChatModule.swf?v=265"
+			uri="rtmp://scgncnf01.delvag.org/bigbluebutton"
+			dependsOn="UsersModule"
+			privateEnabled="true"
+			fontSize="12"
+			position="top-right"
+			baseTabIndex="701"
+			colorPickerIsVisible="false"
+		/>
+
+		<module name="UsersModule" url="http://scgncnf01.delvag.org/client/UsersModule.swf?v=265"
+			uri="rtmp://scgncnf01.delvag.org/bigbluebutton"
+			allowKickUser="true"
+			enableRaiseHand="true"
+			enableSettingsButton="true"
+			baseTabIndex="301"
+		/>
+
+
+		<module name="DeskShareModule"
+			url="http://scgncnf01.delvag.org/client/DeskShareModule.swf?v=265"
+			uri="rtmp://scgncnf01.delvag.org/deskShare"
+			showButton="true"
+			autoStart="false"
+			autoFullScreen="false"
+			baseTabIndex="201"
+		/>
+
+		<module name="PhoneModule" url="http://scgncnf01.delvag.org/client/PhoneModule.swf?v=265"
+			uri="rtmp://scgncnf01.delvag.org/sip"
+			autoJoin="true"
+			listenOnlyMode="false"
+			presenterShareOnly="false"
+			skipCheck="false"
+			showButton="true"
+			enabledEchoCancel="true"
+			useWebRTCIfAvailable="true"
+			showPhoneOption="false"
+			echoTestApp="9196"
+			dependsOn="UsersModule"
+		/>
+
+		<module name="VideoconfModule" url="http://scgncnf01.delvag.org/client/VideoconfModule.swf?v=265"
+			uri="rtmp://scgncnf01.delvag.org/video"
+			dependson = "UsersModule"
+			videoQuality = "100"
+			presenterShareOnly = "false"
+			controlsForPresenter = "true"
+			resolutions = "320x240,640x480,1280x720,1920x1080"
+			autoStart = "false"
+			skipCamSettingsCheck="false"
+			showButton = "true"
+			showCloseButton = "true"
+			publishWindowVisible = "true"
+			viewerWindowMaxed = "false"
+			viewerWindowLocation = "top"
+			camKeyFrameInterval = "30"
+			camModeFps = "10"
+			camQualityBandwidth = "0"
+			camQualityPicture = "90"
+			smoothVideo="false"
+			applyConvolutionFilter="false"
+			convolutionFilter="-1, 0, -1, 0, 6, 0, -1, 0, -1"
+			filterBias="0"
+			filterDivisor="4"
+			enableH264 = "true"
+			h264Level = "2.1"
+			h264Profile = "main"
+			displayAvatar = "false"
+			focusTalking = "false"
+			glowColor = "0x4A931D"
+			glowBlurSize = "30.0"
+		/>
+
+		<module name="WhiteboardModule" url="http://scgncnf01.delvag.org/client/WhiteboardModule.swf?v=265"
+			uri="rtmp://scgncnf01.delvag.org/bigbluebutton"
+			dependsOn="PresentModule"
+			baseTabIndex="601"
+			whiteboardAccess="presenter"
+			keepToolbarVisible="false"
+		/>
+
+
+		<module name="PollingModule" url="http://scgncnf01.delvag.org/client/PollingModule.swf?v=265"
+			uri="rtmp://scgncnf01.delvag.org/bigbluebutton"
+			dependsOn="PresentModule"
+		/>
+
+
+		<module name="PresentModule" url="http://scgncnf01.delvag.org/client/PresentModule.swf?v=265"
+			uri="rtmp://scgncnf01.delvag.org/bigbluebutton"
+			host="http://scgncnf01.delvag.org"
+			showPresentWindow="true"
+			showWindowControls="true"
+			openExternalFileUploadDialog="false"
+			dependsOn="UsersModule"
+			baseTabIndex="501"
+			maxFileSize="30"
+		/>
+
+		<module name="VideodockModule" url="http://scgncnf01.delvag.org/client/VideodockModule.swf?v=265"
+			uri="rtmp://scgncnf01.delvag.org/bigbluebutton"
+			dependsOn="VideoconfModule, UsersModule"
+			autoDock="true"
+			showControls="true"
+			maximizeWindow="false"
+			position="bottom-right"
+			width="172"
+			height="179"
+			layout="smart"
+			oneAlwaysBigger="false"
+			baseTabIndex="401"
+		/>
+
+		<module name="LayoutModule" url="http://scgncnf01.delvag.org/client/LayoutModule.swf?v=265"
+			uri="rtmp://scgncnf01.delvag.org/bigbluebutton"
+			layoutConfig="http://scgncnf01.delvag.org/client/conf/layout.xml"
+			enableEdit="false"
+		/>
+
+<!--
+	<module name="NotesModule" url="http://scgncnf01.delvag.org/client/NotesModule.swf?v=265"
+	  saveURL="http://scgncnf01.delvag.org"
+	  position="top-left"
+	/>
+
+	<module name="BroadcastModule" url="http://scgncnf01.delvag.org/client/BroadcastModule.swf?v=265"
+	  uri="rtmp://scgncnf01.delvag.org/bigbluebutton"
+	  streamsUri="http://scgncnf01.delvag.org/streams.xml"
+	  position="top-left"
+	  showStreams="true"
+	  autoPlay="false"
+	  dependsOn="UsersModule"
+	/>
+-->
+
+	</modules>
+</config>
