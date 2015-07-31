@@ -2,6 +2,7 @@
 <!-- BigBlueButton Client build.xml for use by Hudson builds.   -->
 <project name="BigBlueButton Client" basedir="." default="clean-build-all" >
     <property environment="env" />
+
     <property name="STATIC_RSL" value="true" />
     <property name="DEBUG" value="true" />
     <property name="BUILD_ENV" value="LOCAL" />
@@ -230,25 +231,25 @@
         </copy>
     </target>
 
-  <target name="build-broadcast" description="Compile Broadcast Module" >
+    <target name="build-broadcast" description="Compile Broadcast Module" >
     <build-module src="${SRC_DIR}" target="${BROADCAST}" />
-  </target>
+    </target>
 
-	<target name="build-chat" description="Compile Chat Module">
-		<build-module src="${SRC_DIR}" target="${CHAT}" />
-	</target>
+    <target name="build-chat" description="Compile Chat Module">
+        <build-module src="${SRC_DIR}" target="${CHAT}" />
+    </target>
 
-  <target name="build-notes" description="Compile Notes Module">
+    <target name="build-notes" description="Compile Notes Module">
     <build-module src="${SRC_DIR}" target="${NOTES}" />
-  </target>
+    </target>
 
-	<target name="build-polling" description="Compile Polling Module">
-		<build-module src="${SRC_DIR}" target="${POLLING}" />
-	</target>
+    <target name="build-polling" description="Compile Polling Module">
+        <build-module src="${SRC_DIR}" target="${POLLING}" />
+    </target>
 
-	<target name="build-present" description="Compile Present Module">
-		<build-module src="${SRC_DIR}" target="${PRESENT}" />
-	</target>
+    <target name="build-present" description="Compile Present Module">
+        <build-module src="${SRC_DIR}" target="${PRESENT}" />
+    </target>
 
 	<target name="build-deskshare-standalone" depends="build-deskshare-no-linker" description="Compile Deskshare Standalone Application">
 		<echo message="Compiling deskshare standalone without optimization." />

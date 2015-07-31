@@ -26,3 +26,6 @@ akka-bbb-apps/akka-bbb-apps*.log
 bigbluebutton-html5/log/development.log
 bigbluebutton-web/target-eclipse*
 record-and-playback/.loadpath
+
+.idea
+*.iml
