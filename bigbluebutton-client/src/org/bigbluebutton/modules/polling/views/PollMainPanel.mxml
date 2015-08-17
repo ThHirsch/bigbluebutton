@@ -16,7 +16,6 @@
         import org.bigbluebutton.modules.polling.events.PollEvent;
         import org.bigbluebutton.modules.polling.events.PollMainWindowEvent;
         import org.bigbluebutton.modules.polling.model.PollingViewModel;
-        import org.bigbluebutton.util.i18n.ResourceUtil;
 
         public var viewModel:PollingViewModel;
         
@@ -47,11 +46,12 @@
   </mx:Script>
   
   <mx:VBox width="90%" height="100%" horizontalAlign="center">
-    <mx:HBox width="100%" height="25" horizontalAlign="left">
+   
+	<mx:HBox width="100%" height="7%" horizontalAlign="left">
       <mx:Label text="Select a Poll" styleName="micSettingsWindowTitleStyle"/>
     </mx:HBox>
     
-    <mx:VBox width="100%" height="50%" borderStyle="solid" borderThickness="1">
+    <mx:VBox width="100%" height="56%" borderStyle="solid" borderThickness="1">
       <mx:HBox width="100%" height="20" horizontalAlign="left">
         <mx:Label id="pollsLabel" text="Select a poll from the list." styleName="presentationNamesLabelStyle" paddingLeft="3"/>
       </mx:HBox>  
@@ -63,21 +63,22 @@
       </mx:HBox>
    </mx:VBox>
    
-    <mx:HBox width="100%" height="25" horizontalAlign="left" paddingTop="5">
+    <mx:HBox width="100%" height="7%" horizontalAlign="left"  paddingBottom="3">
       <mx:Label text="Custom Poll" styleName="micSettingsWindowTitleStyle"/>
     </mx:HBox>
     
-    <mx:VBox width="100%" height="15%" borderStyle="solid" borderThickness="1">
-      <mx:HBox width="100%" height="25"> 
+    <mx:VBox width="100%" height="20%" borderStyle="solid"  borderThickness="1">
+      <mx:HBox width="100%" height="10%">
         <mx:Label id="customPollsLabel" text="Create a custom poll" styleName="presentationNamesLabelStyle" paddingLeft="5"/>
       </mx:HBox>  
-      <mx:HBox width="100%" height="30" horizontalAlign="center" paddingBottom="3">
+      <mx:HBox width="100%" height="90%" horizontalAlign="center" paddingBottom="3">
         <mx:Button label="Create Custom Poll" height="25" click="createPoll()"/>
       </mx:HBox> 
     </mx:VBox>
 
-    <mx:HBox width="100%" height="35" horizontalAlign="right" paddingTop="5">
+    <mx:HBox  width="100%" height="10%" horizontalAlign="right" paddingTop="3">
       <mx:Button label="Close" styleName="presentationUploadShowButtonStyle" click="close()"/>
     </mx:HBox>
+	  
   </mx:VBox>
 </mx:Panel>

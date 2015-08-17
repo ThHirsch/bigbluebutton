@@ -73,16 +73,39 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 					System.setClipboard(UITextField(txtMessage.mx_internal::getTextField()).selectedText);
 				}
 			}
+
+			private function onValueCommit() : void
+            {
+                 invalidateDisplayList();
+                 validateNow();
+            }
+
+            function canvasChangeHandler():void {
+                invalidateDisplayList();
+                validateNow();
+            }
+
+
+            function onChangeCanvas() : void {
+                var timer:Timer = new Timer(20, 1);
+                timer.addEventListener(TimerEvent.TIMER, canvasChangeHandler);
+                timer.start();
+            }
+
+
 						
 		]]>
 	</mx:Script>
 	
-  <mx:Canvas width="100%" id="hbHeader" verticalScrollPolicy="off" horizontalScrollPolicy="off">
-    <mx:Label id="lblName" text="{data.name}" visible="true" color="gray" textAlign="left" left="0"/>
+  <mx:Canvas width="100%" id="hbHeader" dataChange="onChangeCanvas();" verticalScrollPolicy="off"  horizontalScrollPolicy="off">
+
+
+     <mx:Label id="lblName" text="{data.name}" visible="true" color="gray" valueCommit="this.onValueCommit()"   textAlign="left" left="0"/>
     <mx:Text id="lblTime" htmlText="{data.time}" textAlign="right"
              visible="true" 
              color="gray" right="0" />       
   </mx:Canvas>
   <mx:Text id="txtMessage" htmlText="{data.text}" link="onLinkClick(event)" color="{data.senderColor}"
            keyDown="onKeyDown(event)" paddingLeft="5" width="100%" selectable="true"/>
+
 </mx:VBox>

@@ -20,7 +20,7 @@ Notes.mxml is the main view of the SharedNotes application
 -->
 <CustomMdiWindow xmlns="org.bigbluebutton.common.*"
            xmlns:mx="http://www.adobe.com/2006/mxml"
-           width="700" height="450"
+           width="700" height="460"
            xmlns:mate="http://mate.asfusion.com/"
            xmlns:poll="org.bigbluebutton.modules.polling.views.*"
            implements="org.bigbluebutton.common.IBbbModuleWindow"
@@ -32,7 +32,6 @@ Notes.mxml is the main view of the SharedNotes application
       import org.bigbluebutton.main.views.MainCanvas;
       import org.bigbluebutton.modules.polling.events.PollMainWindowEvent;
       import org.bigbluebutton.modules.polling.model.PollingViewModel;
-      import org.bigbluebutton.util.i18n.ResourceUtil;
   
       [Bindable] public var viewModel:PollingViewModel;
       
