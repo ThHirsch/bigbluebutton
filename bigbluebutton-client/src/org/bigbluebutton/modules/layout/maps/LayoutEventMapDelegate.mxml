@@ -44,6 +44,8 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 				// using the negation will keep it enabled if the property is not there
 				layoutComponent.enableEdit = !(_attributes.enableEdit == "false");
 				layoutComponent.visibleTools = options.showLayoutTools;
+				layoutComponent.visibleLayoutSelection = options.showLayoutSelection;
+				layoutComponent.visibleLayoutApplyToViewers = options.showLayoutApplyToViewers;
 				var event:ToolbarButtonEvent = new ToolbarButtonEvent(ToolbarButtonEvent.ADD);
 				event.button = layoutComponent;
 				event.location = ToolbarButtonEvent.BOTTOM_TOOLBAR;

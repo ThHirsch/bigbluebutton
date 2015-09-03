@@ -3,6 +3,7 @@
 		 basedir="."
 		 default="build">
 	<property environment="env"/>
+
 	<property name="FLEX_HOME"
 			  value="${env.FLEX_HOME}"/>
 	<property name="BASE_DIR"

@@ -20,13 +20,17 @@ package org.bigbluebutton.main.model.users
 {
 	import com.asfusion.mate.events.Dispatcher;
 	
-	import flash.events.*;
+	import flash.events.Event;
+	import flash.events.HTTPStatusEvent;
+	import flash.events.IOErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
 	import flash.net.navigateToURL;
-	import mx.collections.ArrayCollection;	
+	
+	import mx.collections.ArrayCollection;
+	
 	import org.bigbluebutton.common.LogUtil;
 	import org.bigbluebutton.core.BBB;
 	import org.bigbluebutton.core.model.Me;
@@ -139,6 +143,8 @@ package org.bigbluebutton.main.model.users
                                              .withLayout(response.defaultLayout).withWelcome(response.welcome)
                                              .withDialNumber(response.dialnumber).withRole(response.role)
                                              .withCustomData(response.customData).build();
+		
+		
                 
         MeetingModel.getInstance().meeting = new MeetingBuilder(response.conference, response.conferenceName)
                                              .withDefaultLayout(response.defaultLayout).withVoiceConf(response.voiceBridge)

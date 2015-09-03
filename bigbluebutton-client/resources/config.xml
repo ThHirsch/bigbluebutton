@@ -1,0 +1,167 @@
+<?xml version="1.0" ?>
+<config>
+    <localeversion suppressWarning="false">0.9.0</localeversion>
+    <version>VERSION</version>
+    <help url="http://<HOST_ADDRESS>/help.html"/>
+    <javaTest url="http://<HOST_ADDRESS>/testjava.html"/>
+    <porttest host="<HOST_ADDRESS>" application="video/portTest" timeout="10000"/>
+    <bwMon server="<HOST_ADDRESS>" application="video/bwTest"/>
+    <application uri="rtmp://<HOST_ADDRESS>/bigbluebutton" host="http://<HOST_ADDRESS>/bigbluebutton/api/enter"/>
+    <language userSelectionEnabled="true" />
+    <skinning enabled="true" url="http://<HOST_ADDRESS>/client/branding/css/BBBDefault.css.swf" />
+    <shortcutKeys showButton="true" />
+    <browserVersions chrome="CHROME_VERSION" firefox="FIREFOX_VERSION" flash="FLASH_VERSION" java="1.7.0_51" />
+    <layout showLogButton="true" defaultLayout="bbb.layout.name.defaultlayout"
+            showToolbar="true" showFooter="true" showMeetingName="true" showHelpButton="true"
+            showLogoutWindow="true" showLayoutTools="true" showLayoutSelection="true" showLayoutApplyToViewers="false" confirmLogout="true"
+            showRecordingNotification="true"/>
+    <meeting muteOnStart="false" />
+    <lock disableCamForLockedUsers="false" disableMicForLockedUsers="false" disablePrivateChatForLockedUsers="false"
+          disablePublicChatForLockedUsers="false" lockLayoutForLockedUsers="false" lockOnJoin="true" lockOnJoinConfigurable="false"/>
+
+    <modules>
+
+        <module name="ChatModule" url="http://<HOST_ADDRESS>/client/ChatModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/bigbluebutton"
+                dependsOn="UsersModule"
+                privateEnabled="true"
+                fontSize="12"
+                position="top-right"
+                baseTabIndex="701"
+                colorPickerIsVisible="false"
+                />
+
+        <module name="UsersModule" url="http://<HOST_ADDRESS>/client/UsersModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/bigbluebutton"
+                allowKickUser="true"
+                hideViewers="true"
+                enableRaiseHand="true"
+                enableSettingsButton="true"
+                baseTabIndex="301"
+                />
+
+
+        <module name="DeskShareModule"
+                url="http://<HOST_ADDRESS>/client/DeskShareModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/deskShare"
+                showButton="true"
+                autoStart="false"
+                autoFullScreen="false"
+                baseTabIndex="201"
+                />
+
+        <module name="PhoneModule" url="http://<HOST_ADDRESS>/client/PhoneModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/sip"
+                autoJoin="true"
+                listenOnlyMode="true"
+                presenterShareOnly="false"
+                skipCheck="false"
+                showButton="true"
+                enabledEchoCancel="true"
+                useWebRTCIfAvailable="true"
+                showPhoneOption="false"
+                echoTestApp="9196"
+                dependsOn="UsersModule"
+                />
+
+        <module name="VideoconfModule" url="http://<HOST_ADDRESS>/client/VideoconfModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/video"
+                dependson = "UsersModule"
+                videoQuality = "100"
+                presenterShareOnly = "false"
+                controlsForPresenter = "false"
+                resolutions = "320x240,640x480,1280x720"
+                autoStart = "false"
+                skipCamSettingsCheck="false"
+                showButton = "true"
+                showCloseButton = "true"
+                publishWindowVisible = "true"
+                viewerWindowMaxed = "false"
+                viewerWindowLocation = "top"
+                camKeyFrameInterval = "30"
+                camModeFps = "10"
+                camQualityBandwidth = "0"
+                camQualityPicture = "90"
+                smoothVideo="false"
+                applyConvolutionFilter="false"
+                convolutionFilter="-1, 0, -1, 0, 6, 0, -1, 0, -1"
+                filterBias="0"
+                filterDivisor="4"
+                enableH264 = "true"
+                h264Level = "2.1"
+                h264Profile = "main"
+                displayAvatar = "false"
+                focusTalking = "false"
+                glowColor = "0x4A931D"
+                glowBlurSize = "30.0"
+                />
+
+        <module name="WhiteboardModule" url="http://<HOST_ADDRESS>/client/WhiteboardModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/bigbluebutton"
+                dependsOn="PresentModule"
+                baseTabIndex="601"
+                whiteboardAccess="presenter"
+                keepToolbarVisible="false"
+                />
+        <!--
+        
+            <module name="PollingModule" url="http://<HOST_ADDRESS>/client/PollingModule.swf?v=VERSION" 
+              uri="rtmp://<HOST_ADDRESS>/bigbluebutton" 
+              dependsOn="PresentModule"
+            />
+                    
+        -->
+        <module name="PresentModule" url="http://<HOST_ADDRESS>/client/PresentModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/bigbluebutton"
+                host="http://<HOST_ADDRESS>"
+                showPresentWindow="true"
+                showWindowControls="true"
+                openExternalFileUploadDialog="false"
+                dependsOn="UsersModule"
+                baseTabIndex="501"
+                maxFileSize="30"
+                />
+
+        <module name="VideodockModule" url="http://<HOST_ADDRESS>/client/VideodockModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/bigbluebutton"
+                dependsOn="VideoconfModule, UsersModule"
+                autoDock="true"
+                showControls="true"
+                maximizeWindow="false"
+                position="bottom-right"
+                width="172"
+                height="179"
+                layout="smart"
+                oneAlwaysBigger="false"
+                baseTabIndex="401"
+                />
+
+        <module name="PollingModule" url="http://<HOST_ADDRESS>/client/PollingModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/bigbluebutton"
+                dependsOn="PresentModule"
+                />
+
+        <module name="LayoutModule" url="http://<HOST_ADDRESS>/client/LayoutModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/bigbluebutton"
+                layoutConfig="http://<HOST_ADDRESS>/client/conf/layout.xml"
+                enableEdit="false"
+                />
+
+        <!--
+            <module name="NotesModule" url="http://<HOST_ADDRESS>/client/NotesModule.swf?v=VERSION"
+              saveURL="http://<HOST_ADDRESS>"
+              position="top-left"
+            />
+            
+            <module name="BroadcastModule" url="http://<HOST_ADDRESS>/client/BroadcastModule.swf?v=VERSION"
+              uri="rtmp://<HOST_ADDRESS>/bigbluebutton"
+              streamsUri="http://<HOST_ADDRESS>/streams.xml"
+              position="top-left"
+              showStreams="true"
+              autoPlay="false"
+              dependsOn="UsersModule"
+            />
+        -->
+
+    </modules>
+</config>

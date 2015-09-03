@@ -21,7 +21,7 @@ package org.bigbluebutton.modules.users.services
   import com.asfusion.mate.events.Dispatcher;
   
   import org.bigbluebutton.common.LogUtil;
-    import org.bigbluebutton.common.Role;
+  import org.bigbluebutton.common.Role;
   import org.bigbluebutton.core.BBB;
   import org.bigbluebutton.core.EventConstants;
   import org.bigbluebutton.core.UsersUtil;
@@ -51,7 +51,7 @@ package org.bigbluebutton.modules.users.services
   import org.bigbluebutton.modules.users.events.MeetingMutedEvent;
   import org.bigbluebutton.modules.users.model.UsersOptions;
 
-  public class MessageReceiver implements IMessageListener
+public class MessageReceiver implements IMessageListener
   {
     private static const LOG:String = "Users::MessageReceiver - ";
        
@@ -59,11 +59,12 @@ package org.bigbluebutton.modules.users.services
     private var _conference:Conference;
     private static var globalDispatcher:Dispatcher = new Dispatcher();
     private var userOptions:UsersOptions;
-    
+
     public function MessageReceiver() {
       _conference = UserManager.getInstance().getConference();
       BBB.initConnectionManager().addMessageListener(this);
       this.dispatcher = new Dispatcher();
+
     }
     
     public function onMessage(messageName:String, message:Object):void {
@@ -147,8 +148,8 @@ package org.bigbluebutton.modules.users.services
 		var map:Object = JSON.parse(msg.msg);
 		var user:BBBUser = UsersUtil.getUser(map.user);
 		
-	if(user!=null && user.userLocked != map.lock)
-    			user.lockStatusChanged(map.lock);
+		if(user!=null && user.userLocked != map.lock)
+			user.lockStatusChanged(map.lock);
 		
 		return;
 	}
@@ -381,9 +382,9 @@ package org.bigbluebutton.modules.users.services
       
       var user:BBBUser = UserManager.getInstance().getConference().getUser(webUserId);
 
-       if(user==null){
-                return;
-            }
+      if(user==null){
+          return;
+      }
 
       trace(LOG + "Notify others that user [" + user.userID + ", " + user.name + "] is leaving!!!!");
       
@@ -548,20 +549,21 @@ package org.bigbluebutton.modules.users.services
       user.isLeavingFlag = false;
       user.listenOnly = joinedUser.listenOnly;
       user.userLocked = joinedUser.locked;
-	  
-       LogUtil.debug(LOG + "User status: hasStream " + joinedUser.hasStream);
+        userOptions = new UsersOptions();
+        trace(LOG + "User status: hasStream " + joinedUser.hasStream);
+		
+        if(userOptions.hideViewers){
+            if(UserManager.getInstance().getConference().amIModerator()
+                || user.role != Role.VIEWER
+                || UserManager.getInstance().getConference().amIThisUser(user.userID) ){
+                trace(LOG + "Joined as [" + user.userID + "," + user.name + "," + user.role + "," + joinedUser.hasStream + "]");
+                UserManager.getInstance().getConference().addUser(user);
+            }
+        }else{
+            trace(LOG + "Joined as [" + user.userID + "," + user.name + "," + user.role + "," + joinedUser.hasStream + "]");
+            UserManager.getInstance().getConference().addUser(user);
+        }
 
-     if(UserManager.getInstance().getConference().amIModerator()
-                     || user.role != Role.VIEWER
-                     || UserManager.getInstance().getConference().amIThisUser(user.userID) ){
-                      LogUtil.debug(LOG + "Joined as [" + user.userID + "," + user.name + "," + user.role + "," + joinedUser.hasStream + "]");
-                     UserManager.getInstance().getConference().addUser(user);
-                 }
-
-      
-      //trace(LOG + "Joined as [" + user.userID + "," + user.name + "," + user.role + "," + joinedUser.hasStream + "]");
-      //UserManager.getInstance().getConference().addUser(user);
-      
       if (joinedUser.hasStream) {
         UserManager.getInstance().getConference().sharedWebcam(user.userID, joinedUser.webcamStream);
       } else {
