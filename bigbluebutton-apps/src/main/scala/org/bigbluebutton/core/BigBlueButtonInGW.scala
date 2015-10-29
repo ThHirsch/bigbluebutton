@@ -1,5 +1,7 @@
 package org.bigbluebutton.core
 
+import java.sql.DriverManager
+
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.conference.service.presentation.PreuploadedPresentationsUtil
 import scala.collection.JavaConversions._
@@ -79,21 +81,24 @@ class BigBlueButtonInGW(bbbGW: BigBlueButtonGateway, presUtil: PreuploadedPresen
     // v => v.booleanValue() -> convert java Boolean to Scala Boolean
     // toMap -> converts from scala mutable map to scala immutable map
     val s = settings.mapValues (v => v.booleanValue() /* convert java Boolean to Scala Boolean */).toMap  
-    val disableCam = s.getOrElse("disableCam", false) 
+    val disableCam = s.getOrElse("disableCam", false)
     val disableMic = s.getOrElse("disableMic", false)
     val disablePrivChat = s.getOrElse("disablePrivateChat", false)
     val disablePubChat = s.getOrElse("disablePublicChat", false)
     val lockedLayout = s.getOrElse("lockedLayout", false)
     var lockOnJoin = s.getOrElse("lockOnJoin", false)
     var lockOnJoinConfigurable = s.getOrElse("lockOnJoinConfigurable", false)
-    
+    var disableJoiningViewers = s.getOrElse("disableJoiningViewers",false)
+
     val permissions = new Permissions(disableCam = disableCam,
                                       disableMic = disableMic,
                                       disablePrivChat = disablePrivChat,
                                       disablePubChat = disablePubChat,
                                       lockedLayout = lockedLayout,
                                       lockOnJoin = lockOnJoin,
-                                      lockOnJoinConfigurable = lockOnJoinConfigurable)
+                                      lockOnJoinConfigurable = lockOnJoinConfigurable,
+                                      disableJoiningViewers = disableJoiningViewers)
+
 
     bbbGW.accept(new SetLockSettings(meetingID, userId, permissions))
   }
@@ -111,14 +116,15 @@ class BigBlueButtonInGW(bbbGW: BigBlueButtonGateway, presUtil: PreuploadedPresen
     val lockedLayout = s.getOrElse("lockedLayout", false)
     val lockOnJoin = s.getOrElse("lockOnJoin", false)
     val lockOnJoinConfigurable = s.getOrElse("lockOnJoinConfigurable", false)
+    val disableJoiningViewers = s.getOrElse("disableJoiningViewers", false)
     val permissions = new Permissions(disableCam = disableCam,
                                       disableMic = disableMic,
                                       disablePrivChat = disablePrivChat,
                                       disablePubChat = disablePubChat,
                                       lockedLayout = lockedLayout,
                                       lockOnJoin = lockOnJoin,
-                                      lockOnJoinConfigurable = lockOnJoinConfigurable)
-
+                                      lockOnJoinConfigurable = lockOnJoinConfigurable,
+                                      disableJoiningViewers = disableJoiningViewers)
     bbbGW.accept(new InitLockSettings(meetingID, permissions))
   }
   

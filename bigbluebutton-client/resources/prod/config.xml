@@ -34,6 +34,7 @@
 			lockLayoutForLockedUsers="false"
 			lockOnJoin="false"
 			lockOnJoinConfigurable="true"
+			disableJoiningViewers = "true"
 	/>
 
 	<modules>

@@ -19,6 +19,7 @@
 package org.bigbluebutton.main.api
 {
   import flash.external.ExternalInterface;  
+
   import org.bigbluebutton.common.LogUtil;
   import org.bigbluebutton.common.Role;
   import org.bigbluebutton.core.EventConstants;
@@ -318,7 +319,8 @@ package org.bigbluebutton.main.api
       payload.userID = UsersUtil.internalUserIDToExternalUserID(user.userID);
       payload.userName = user.name;        
       
-      broadcastEvent(payload);        
+	  LogUtil.debug("ExternalApiCalls ::::::::::::::::::::::::::::::");
+      broadcastEvent(payload);
     }    
 
     public function handleUserLeftEvent(event:UserLeftEvent):void {

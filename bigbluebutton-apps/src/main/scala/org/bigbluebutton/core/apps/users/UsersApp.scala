@@ -283,13 +283,16 @@ trait UsersApp {
                   webcamStream="", phoneUser=false, vu, listenOnly=false)
   	
 	    users.addUser(uvo)
-		
+
+      val meetingState = new MeetingState(meetingID, recorded, uvo.userID, permissions, meetingMuted)
+
 	    logger.info("User joined meeting:  mid=[" + meetingID + "] uid=[" + uvo.userID + "] role=[" + uvo.role + "] locked=[" + uvo.locked + "] permissions.lockOnJoin=[" + permissions.lockOnJoin + "] permissions.lockOnJoinConfigurable=[" + permissions.lockOnJoinConfigurable + "]")
-	    outGW.send(new UserJoined(meetingID, recorded, uvo))
-	
-	    outGW.send(new MeetingState(meetingID, recorded, uvo.userID, permissions, meetingMuted))
-	    
-	    // Become presenter if the only moderator		
+
+      outGW.send(new UserJoined(meetingID, recorded, uvo, meetingState))
+
+	    outGW.send(meetingState)
+
+	    // Become presenter if the only moderator
 	    if (users.numModerators == 1) {
 	      if (ru.role == Role.MODERATOR) {
 		      assignNewPresenter(msg.userID, ru.name, msg.userID)
@@ -351,8 +354,9 @@ trait UsersApp {
 		                  phoneUser=true, vu, listenOnly=false)
 		  	
 		      users.addUser(uvo)
-		      logger.info("New user joined voice for user [" + uvo.name + "] userid=[" + msg.voiceUser.webUserId + "]")
-		      outGW.send(new UserJoined(meetingID, recorded, uvo, sessionId))
+          val meetingState = new MeetingState(meetingID, recorded, uvo.userID, permissions, meetingMuted)
+		       logger.info("New user joined voice for user [" + uvo.name + "] userid=[" + msg.voiceUser.webUserId + "]")
+		      outGW.send(new UserJoined(meetingID, recorded, uvo, meetingState , sessionId))
 		      
 		      outGW.send(new UserJoinedVoice(meetingID, recorded, voiceBridge, uvo))
 		      if (meetingMuted)

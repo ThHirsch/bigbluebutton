@@ -36,6 +36,7 @@ package org.bigbluebutton.main.model.users {
 	  public var voiceBridge:String;
 	  public var dialNumber:String;
 	  [Bindable] public var record:Boolean;
+	public var amIOrganizer:Boolean;  
     
     private static const LOG:String = "main.model.users::Conference - ";
     
@@ -443,7 +444,8 @@ package org.bigbluebutton.main.model.users {
 			disablePublicChat:Boolean,
 			lockedLayout:Boolean,
 			lockOnJoin:Boolean,
-			lockOnJoinConfigurable:Boolean;
+			lockOnJoinConfigurable:Boolean,
+			disableJoiningViewers:Boolean
 			
 			var lockConfig:XML;
 			
@@ -493,9 +495,19 @@ package org.bigbluebutton.main.model.users {
 				lockOnJoinConfigurable = false; //If not set, default to false
 			}
 			
+			try
+			{
+				disableJoiningViewers = (lockConfig.@disableJoiningViewers.toUpperCase() == "TRUE");
+			} 
+			catch(e:Error) 
+			{
+				disableJoiningViewers = false;
+			}
+			
+			
 			trace(LOG + " init lock settings from config");
       
-			lockSettings = new LockSettingsVO(disableCam, disableMic, disablePrivateChat, disablePublicChat, lockedLayout, lockOnJoin, lockOnJoinConfigurable);
+			lockSettings = new LockSettingsVO(disableCam, disableMic, disablePrivateChat, disablePublicChat, lockedLayout, lockOnJoin, lockOnJoinConfigurable,disableJoiningViewers);
 			
 			setLockSettings(lockSettings);
 		}

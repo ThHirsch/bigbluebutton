@@ -655,10 +655,10 @@ public class MeetingService implements MessageListener {
 		runExec.execute(task);
 	}
 
-	@Override
-  public void handle(IMessage message) {
-			receivedMessages.add(message);    
-  }
+      @Override
+      public void handle(IMessage message) {
+                receivedMessages.add(message);
+      }
 	
 	public void start() {
 		log.info("Starting Meeting Service.");

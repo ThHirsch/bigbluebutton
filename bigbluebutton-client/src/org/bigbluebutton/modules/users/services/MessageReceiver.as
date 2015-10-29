@@ -20,6 +20,8 @@ package org.bigbluebutton.modules.users.services
 {
   import com.asfusion.mate.events.Dispatcher;
   
+  import mx.controls.Alert;
+
   import org.bigbluebutton.common.LogUtil;
   import org.bigbluebutton.common.Role;
   import org.bigbluebutton.core.BBB;
@@ -167,7 +169,8 @@ public class MessageReceiver implements IMessageListener
 	  														map.disablePubChat,
 	  														map.lockedLayout,
 	  														map.lockOnJoin,
-	  														map.lockOnJoinConfigurable);
+	  														map.lockOnJoinConfigurable,
+	  														map.disableJoiningViewers);
       UserManager.getInstance().getConference().setLockSettings(lockSettings);
     }
     
@@ -184,8 +187,17 @@ public class MessageReceiver implements IMessageListener
       trace(LOG + "*** handleJoinedMeeting " + msg.msg + " **** \n");      
       var map:Object = JSON.parse(msg.msg);
       var userid: String = map.user.userId;
-      
+
+	  var perm:Object = map.meetingState.permissions;
+
+	  var lockSettings:LockSettingsVO = new LockSettingsVO(perm.disableCam, perm.disableMic,
+		  perm.disablePrivChat, perm.disablePubChat, perm.lockedLayout, perm.lockOnJoin, perm.lockOnJoinConfigurable,perm.disableJoiningViewers);
+	  UserManager.getInstance().getConference().setLockSettings(lockSettings);
+
+	  UserManager.getInstance().getConference().applyLockSettings();
+
       var e:UsersConnectionEvent = new UsersConnectionEvent(UsersConnectionEvent.CONNECTION_SUCCESS);
+	  LogUtil.debug(UserManager.getInstance().getConference().getLockSettings().getDisablePrivateChat()+"-MessageReceiver");
       e.userid = userid;
       dispatcher.dispatchEvent(e);      
     }
@@ -205,11 +217,13 @@ public class MessageReceiver implements IMessageListener
       var perm:Object = map.permissions;
       
       var lockSettings:LockSettingsVO = new LockSettingsVO(perm.disableCam, perm.disableMic,
-                                                 perm.disablePrivChat, perm.disablePubChat, perm.lockedLayout, perm.lockOnJoin, perm.lockOnJoinConfigurable);
+                                                 perm.disablePrivChat, perm.disablePubChat, perm.lockedLayout, perm.lockOnJoin, perm.lockOnJoinConfigurable,perm.disableJoiningViewers);
       UserManager.getInstance().getConference().setLockSettings(lockSettings);
       MeetingModel.getInstance().meetingMuted = map.meetingMuted;
-      
+
       UserManager.getInstance().getConference().applyLockSettings();
+	  LogUtil.debug(UserManager.getInstance().getConference().getLockSettings().getDisablePrivateChat()+"MessageReceiver - handleMeetingState");
+
     }
     
     private function handleGetRecordingStatusReply(msg: Object):void {

@@ -58,6 +58,8 @@ class UsersClientMessageSender(service: ConnectionInvokerService) extends OutMes
     args.put("lockedLayout", perms.lockedLayout:java.lang.Boolean);
     args.put("lockOnJoin", perms.lockOnJoin:java.lang.Boolean);
     args.put("lockOnJoinConfigurable", perms.lockOnJoinConfigurable:java.lang.Boolean);
+    args.put("disableJoiningViewers",perms.disableJoiningViewers:java.lang.Boolean);
+
     args
 	}
 	
@@ -99,6 +101,7 @@ class UsersClientMessageSender(service: ConnectionInvokerService) extends OutMes
     args.put("lockedLayout", msg.permissions.lockedLayout:java.lang.Boolean);
     args.put("lockOnJoin", msg.permissions.lockOnJoin:java.lang.Boolean);
     args.put("lockOnJoinConfigurable", msg.permissions.lockOnJoinConfigurable:java.lang.Boolean);
+    args.put("disableJoiningViewers", msg.permissions.disableJoiningViewers:java.lang.Boolean);
     
 	  var users = new ArrayList[java.util.HashMap[String, Object]];
       msg.applyTo.foreach(uvo => {		
@@ -369,8 +372,9 @@ class UsersClientMessageSender(service: ConnectionInvokerService) extends OutMes
 	private def handleUserJoined(msg: UserJoined):Unit = {
 	  var args = new HashMap[String, Object]();	
 	  args.put("user", buildUserHashMap(msg.user));
-		
-	  val message = new java.util.HashMap[String, Object]() 
+    args.put("meetingState", msg.meetingState);
+
+    val message = new java.util.HashMap[String, Object]()
 	  val gson = new Gson();
   	message.put("msg", gson.toJson(args))
 
@@ -378,7 +382,8 @@ class UsersClientMessageSender(service: ConnectionInvokerService) extends OutMes
 			
   	var jmr = new DirectClientMessage(msg.meetingID, msg.user.userID, "joinMeetingReply", message);
   	service.sendMessage(jmr);
-  	  
+
+
 //  println("UsersClientMessageSender - handleUserJoined \n" + message.get("msg") + "\n")
   	    
   	var m = new BroadcastClientMessage(msg.meetingID, "participantJoined", message);

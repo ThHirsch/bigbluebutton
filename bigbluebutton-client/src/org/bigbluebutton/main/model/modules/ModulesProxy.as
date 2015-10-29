@@ -19,11 +19,22 @@
 package org.bigbluebutton.main.model.modules
 {
 	import com.asfusion.mate.events.Dispatcher;
+	
+	import flash.display.DisplayObject;
+	
 	import mx.controls.Alert;
+	import mx.core.FlexGlobals;
+	import mx.core.IFlexDisplayObject;
+	import mx.managers.PopUpManager;
+	
 	import org.bigbluebutton.common.LogUtil;
+	import org.bigbluebutton.common.Role;
+	import org.bigbluebutton.core.managers.UserManager;
 	import org.bigbluebutton.main.events.PortTestEvent;
 	import org.bigbluebutton.main.model.ConferenceParameters;
 	import org.bigbluebutton.main.model.PortTestProxy;
+	import org.bigbluebutton.main.model.users.Conference;
+	import org.bigbluebutton.main.views.Dialog;
 	
 	public class ModulesProxy {
 		
@@ -75,9 +86,16 @@ package org.bigbluebutton.main.model.modules
 		}
 		
 		public function loadAllModules(params:ConferenceParameters):void{
-			modulesManager.loadAllModules(params);
+		var conference:Conference = UserManager.getInstance().getConference();
+			if(conference.getLockSettings().getDisableJoiningViewers() && conference.getMyRole() == Role.VIEWER){
+				var audioSelection:IFlexDisplayObject = PopUpManager.createPopUp(FlexGlobals.topLevelApplication as DisplayObject, Dialog, true);
+	            		  PopUpManager.centerPopUp(audioSelection);
+			}else{
+				modulesManager.loadAllModules(params);
+			}
+
 		}
-		
+
 		public function handleLogout():void {
 			modulesManager.handleLogout();
 		}

@@ -65,8 +65,6 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 			import flash.events.MouseEvent;
 			import flash.geom.Point;
 			
-			import flexlib.mdi.effects.effectsLib.MDIVistaEffects;
-			
 			import mx.collections.ArrayCollection;
 			import mx.containers.TitleWindow;
 			import mx.controls.Alert;
@@ -76,6 +74,8 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
+			
+			import flexlib.mdi.effects.effectsLib.MDIVistaEffects;
 			
 			import org.bigbluebutton.common.IBbbModuleWindow;
 			import org.bigbluebutton.common.Images;
@@ -428,7 +428,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
   	    var audioSelection:IFlexDisplayObject = PopUpManager.createPopUp(mdiCanvas, AudioSelectionWindow, true);
 		PopUpManager.centerPopUp(audioSelection);
 	  }
-          
+
       private function handleWebRTCAskUserToChangeMicEvent(event:WebRTCAskUserToChangeMicEvent):void {
         var browser:String = event.browser;
         if (browser == "Firefox") {
@@ -633,13 +633,14 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 				var popUp:IFlexDisplayObject = PopUpManager.createPopUp(mdiCanvas, LockSettings, true);
 				var ls:LockSettings = LockSettings(popUp);
 				ls.disableCam = lsv.getDisableCam();
+				ls.disableJoiningViewers = lsv.getDisableJoiningViewers();
 				ls.disableMic = lsv.getDisableMic();
 				ls.disablePrivChat = lsv.getDisablePrivateChat();
 				ls.disablePubChat = lsv.getDisablePublicChat();
 				ls.lockedLayout = lsv.getLockedLayout();
 				ls.lockOnJoin = lsv.getLockOnJoin();
 				ls.lockOnJoinConfigurable = lsv.getLockOnJoinConfigurable();
-        
+
 				var point1:Point = new Point();
 				point1.x = width/2;
 				point1.y = height/2;

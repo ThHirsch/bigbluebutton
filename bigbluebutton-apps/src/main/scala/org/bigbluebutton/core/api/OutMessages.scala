@@ -204,6 +204,7 @@ case class UserJoined(
     meetingID: String, 
     recorded: Boolean, 
     user:UserVO,
+    meetingState:MeetingState,
     version:String = Versions.V_0_0_1
 ) extends IOutMessage
                       

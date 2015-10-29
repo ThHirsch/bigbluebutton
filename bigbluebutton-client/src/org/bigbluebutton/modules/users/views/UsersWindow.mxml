@@ -41,16 +41,15 @@
 			
 			import mx.binding.utils.BindingUtils;
 			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
 			import mx.controls.Menu;
 			import mx.controls.listClasses.IListItemRenderer;
-			import mx.core.IFlexDisplayObject;
 			import mx.events.ListEvent;
 			import mx.events.MenuEvent;
-			import mx.managers.PopUpManager;
 			
+			import org.bigbluebutton.common.IBbbModuleWindow;
 			import org.bigbluebutton.common.Images;
 			import org.bigbluebutton.common.LogUtil;
-			import org.bigbluebutton.common.Role;
 			import org.bigbluebutton.common.events.LocaleChangeEvent;
 			import org.bigbluebutton.core.UsersUtil;
 			import org.bigbluebutton.core.events.LockControlEvent;
@@ -64,10 +63,8 @@
 			import org.bigbluebutton.main.model.users.events.LowerHandEvent;
 			import org.bigbluebutton.main.model.users.events.RaiseHandEvent;
 			import org.bigbluebutton.main.model.users.events.RoleChangeEvent;
-			import org.bigbluebutton.main.views.LockSettings;
 			import org.bigbluebutton.main.views.MainCanvas;
 			import org.bigbluebutton.modules.users.events.MeetingMutedEvent;
-			import org.bigbluebutton.modules.users.events.UsersEvent;
 			import org.bigbluebutton.modules.users.events.UsersRollEvent;
 			import org.bigbluebutton.modules.users.model.UsersOptions;
 			import org.bigbluebutton.util.i18n.ResourceUtil;
@@ -82,6 +79,9 @@
 			
 			[Bindable]
 			private var roomLocked:Boolean = false;
+			
+			[Bindable]
+			private var joiningViewersLocked:Boolean = false;
 			
 			private var myMenu:Menu;
 			
@@ -127,6 +127,7 @@
 				roomMuted = MeetingModel.getInstance().meetingMuted;
 				var lockSettings:LockSettingsVO = UserManager.getInstance().getConference().getLockSettings();
 				roomLocked = lockSettings.isAnythingLocked() && ( lockSettings.getLockOnJoin() || UsersUtil.isAnyoneLocked());
+				joiningViewersLocked = lockSettings.getDisableJoiningViewers();
 				
 				titleBarOverlay.tabIndex = partOptions.baseTabIndex;
 				minimizeBtn.tabIndex = partOptions.baseTabIndex+1;
@@ -275,6 +276,7 @@
 			private function handleChangedLockSettingsEvent(e:LockControlEvent):void {
 				var lockSettings:LockSettingsVO = UserManager.getInstance().getConference().getLockSettings();
 				roomLocked = lockSettings.isAnythingLocked() && ( lockSettings.getLockOnJoin() || UsersUtil.isAnyoneLocked());
+				joiningViewersLocked = lockSettings.getDisableJoiningViewers();
 			}
 			
 			private function lockSettings():void {
@@ -528,6 +530,7 @@
 		<mx:VBox>
 			<mx:Label text="{ResourceUtil.getInstance().getString('bbb.users.roomMuted.text')}" visible="{roomMuted}" includeInLayout="{roomMuted}" />
 			<mx:Label text="{ResourceUtil.getInstance().getString('bbb.users.roomLocked.text')}" visible="{roomLocked}" includeInLayout="{roomLocked}" />
+			<mx:Label text="{ResourceUtil.getInstance().getString('bbb.users.viewerJoiningDisabled.text')}" visible="{joiningViewersLocked}" includeInLayout="{joiningViewersLocked}" />
 		</mx:VBox>
 	</mx:ControlBar>
 	
