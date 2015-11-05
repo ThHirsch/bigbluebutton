@@ -89,7 +89,8 @@ class ApiController {
     String API_CALL = 'create'
     log.debug CONTROLLER_NAME + "#${API_CALL}"
     log.debug params
-  	
+
+
 	// BEGIN - backward compatibility
 	if (StringUtils.isEmpty(params.checksum)) {
       invalid("checksumError", "You did not pass the checksum security check")
@@ -175,8 +176,11 @@ class ApiController {
     String API_CALL = 'join'
     log.debug CONTROLLER_NAME + "#${API_CALL}"
   	ApiErrors errors = new ApiErrors()
-  	  
-    // BEGIN - backward compatibility
+
+    log.info "params.isOrganizer inside join api call:::::::::::::::::::::::::::::::::::::::::::::::::::::"+params.isOrganizer;
+
+
+      // BEGIN - backward compatibility
     if (StringUtils.isEmpty(params.checksum)) {
       invalid("checksumError", "You did not pass the checksum security check")
       return
@@ -393,6 +397,8 @@ class ApiController {
     us.welcome = meeting.getWelcomeMessage()
     us.logoutUrl = meeting.getLogoutUrl();
     us.configXML = configxml;
+    us.isOrganizer = params.isOrganizer;
+
 			
 	if (! StringUtils.isEmpty(params.defaultLayout)) {
 		us.defaultLayout = params.defaultLayout;
@@ -411,10 +417,22 @@ class ApiController {
 	session['logout-url'] = us.logoutUrl
 	
 	meetingService.addUserSession(session['user-token'], us);
-	
+
+    log.info("Role of user joining is ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"+us.role );
+    log.info("is moderator ???  ::::"+us.role.equals("MODERATOR") );
+    log.info("isOrganizer::::::::"+ us.isOrganizer.equals("true"));
+
+    if( us.role.equals("MODERATOR") && us.isOrganizer.equals("true")){
+        us.role = "ORGANIZER";
+        log.info("Role changed to Organiser in join api::::::::::::::::::::::::::::::::::::::::::::::::::::" +us.role);
+    }
+
+    log.info("Before registering role is :"+us.role);
 	// Register user into the meeting.
 	meetingService.registerUser(us.meetingID, us.internalUserId, us.fullname, us.role, us.externUserID, us.authToken)
-	
+
+    log.info("After registering role is :"+us.role);
+
 	log.info("Session user token for " + us.fullname + " [" + session['user-token'] + "]")	
     session.setMaxInactiveInterval(SESSION_TIMEOUT);
     

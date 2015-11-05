@@ -37,6 +37,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 		
 		import flash.events.Event;
 		
+		import mx.controls.Alert;
 		import mx.managers.HistoryManager;
 		import mx.managers.ToolTipManager;
 		import mx.utils.URLUtil;

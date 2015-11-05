@@ -169,6 +169,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 					toolbarPaddingTop = 0;
 				}
 				toolbar.displayToolbar();
+				
       
         showFooterOpt = layoutOptions.showFooter;
         

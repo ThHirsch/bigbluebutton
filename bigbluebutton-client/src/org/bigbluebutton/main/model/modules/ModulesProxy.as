@@ -86,12 +86,17 @@ package org.bigbluebutton.main.model.modules
 		}
 		
 		public function loadAllModules(params:ConferenceParameters):void{
-		var conference:Conference = UserManager.getInstance().getConference();
-			if(conference.getLockSettings().getDisableJoiningViewers() && conference.getMyRole() == Role.VIEWER){
+			var conference:Conference = UserManager.getInstance().getConference();
+			
+			if(conference.getLockSettings().getDisableJoiningViewers() && (conference.getMyRole() == Role.VIEWER || conference.getMyRole() == Role.MODERATOR)){
 				var audioSelection:IFlexDisplayObject = PopUpManager.createPopUp(FlexGlobals.topLevelApplication as DisplayObject, Dialog, true);
 	            		  PopUpManager.centerPopUp(audioSelection);
 			}else{
-				modulesManager.loadAllModules(params);
+	     	   modulesManager.loadAllModules(params);
+			}
+		
+			if(conference.getMyRole() == "ORGANIZER"){
+				conference.setMyRole(Role.MODERATOR);
 			}
 
 		}

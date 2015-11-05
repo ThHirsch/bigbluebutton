@@ -6,6 +6,7 @@ object Role extends Enumeration {
 	type Role = Value
 	val MODERATOR = Value("MODERATOR")
 	val VIEWER = Value("VIEWER")
+  val ORGANIZER = Value("ORGANIZER")
 }
 
 case class Presenter(

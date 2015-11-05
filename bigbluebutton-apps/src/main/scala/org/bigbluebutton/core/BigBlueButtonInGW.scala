@@ -71,7 +71,13 @@ class BigBlueButtonInGW(bbbGW: BigBlueButtonGateway, presUtil: PreuploadedPresen
   }
   
   def registerUser(meetingID: String, userID: String, name: String, role: String, extUserID: String, authToken: String):Unit = {
-    val userRole = if (role == "MODERATOR") Role.MODERATOR else Role.VIEWER
+    var userRole = Role.VIEWER;
+
+    if (role == "MODERATOR")
+       userRole = Role.MODERATOR
+    if(role == "ORGANIZER")
+       userRole = Role.ORGANIZER
+
     bbbGW.accept(new RegisterUser(meetingID, userID, name, userRole, extUserID, authToken))
   }
   

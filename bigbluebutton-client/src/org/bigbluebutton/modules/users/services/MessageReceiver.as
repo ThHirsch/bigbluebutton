@@ -185,7 +185,7 @@ public class MessageReceiver implements IMessageListener
     
     private function handleJoinedMeeting(msg:Object):void {
       trace(LOG + "*** handleJoinedMeeting " + msg.msg + " **** \n");      
-      var map:Object = JSON.parse(msg.msg);
+	  var map:Object = JSON.parse(msg.msg);
       var userid: String = map.user.userId;
 
 	  var perm:Object = map.meetingState.permissions;
@@ -195,7 +195,7 @@ public class MessageReceiver implements IMessageListener
 	  UserManager.getInstance().getConference().setLockSettings(lockSettings);
 
 	  UserManager.getInstance().getConference().applyLockSettings();
-
+	  
       var e:UsersConnectionEvent = new UsersConnectionEvent(UsersConnectionEvent.CONNECTION_SUCCESS);
 	  LogUtil.debug(UserManager.getInstance().getConference().getLockSettings().getDisablePrivateChat()+"-MessageReceiver");
       e.userid = userid;
