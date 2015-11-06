@@ -17,7 +17,7 @@
             showRecordingNotification="true"/>
     <meeting muteOnStart="false" />
     <lock disableCamForLockedUsers="false" disableMicForLockedUsers="false" disablePrivateChatForLockedUsers="false"
-          disablePublicChatForLockedUsers="false" lockLayoutForLockedUsers="false" lockOnJoin="true" lockOnJoinConfigurable="false" disableJoiningViewers="true"/>
+          disablePublicChatForLockedUsers="false" lockLayoutForLockedUsers="false" lockOnJoin="true" lockOnJoinConfigurable="false" disableJoiningViewers="true" lockJoinForViewersOnly="true"/>
 
     <modules>
 

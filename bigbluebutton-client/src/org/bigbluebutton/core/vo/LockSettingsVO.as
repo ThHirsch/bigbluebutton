@@ -31,8 +31,9 @@ package org.bigbluebutton.core.vo
 		private var lockedLayout:Boolean;
 		private var lockOnJoin:Boolean;
 		private var disableJoiningViewers :Boolean;
+		private var lockJoinForViewersOnly:Boolean;
 
-		public function LockSettingsVO(pDisableCam:Boolean, pDisableMic:Boolean, pDisablePrivateChat:Boolean, pDisablePublicChat:Boolean, pLockLayout: Boolean, pLockOnJoin:Boolean, pLockOnJoinConfigurable:Boolean,pDisableJoiningViewers:Boolean)
+		public function LockSettingsVO(pDisableCam:Boolean, pDisableMic:Boolean, pDisablePrivateChat:Boolean, pDisablePublicChat:Boolean, pLockLayout: Boolean, pLockOnJoin:Boolean, pLockOnJoinConfigurable:Boolean,pDisableJoiningViewers:Boolean,pLockJoinForViewersOnly:Boolean)
 		{
 			this.disableCam = pDisableCam;
 			this.disableMic = pDisableMic;
@@ -42,6 +43,7 @@ package org.bigbluebutton.core.vo
 			this.lockOnJoin = pLockOnJoin;
 			this.lockOnJoinConfigurable = pLockOnJoinConfigurable;
 			this.disableJoiningViewers = pDisableJoiningViewers; 
+			this.lockJoinForViewersOnly = pLockJoinForViewersOnly;
 		}
 		
 		public function toMap():Object {
@@ -53,7 +55,8 @@ package org.bigbluebutton.core.vo
 				lockedLayout: this.lockedLayout,
 				lockOnJoin: this.lockOnJoin,
 				lockOnJoinConfigurable:  this.lockOnJoinConfigurable,
-				disableJoiningViewers : this.disableJoiningViewers
+				disableJoiningViewers : this.disableJoiningViewers,
+				lockJoinForViewersOnly :this.lockJoinForViewersOnly
 			};
 			
 			return map;
@@ -88,8 +91,15 @@ package org.bigbluebutton.core.vo
 		}
 		
 		public function getDisableJoiningViewers():Boolean{
-			return disableJoiningViewers
+			return disableJoiningViewers;
 		}
+		
+		public function getLockJoinForViewersOnly():Boolean{
+			return lockJoinForViewersOnly;
+		}
+		
+		
+		
 		public function isAnythingLocked():Boolean {
 			return ( lockedLayout || disableCam || disableMic || disablePrivateChat || disablePublicChat || disableJoiningViewers );
 		}

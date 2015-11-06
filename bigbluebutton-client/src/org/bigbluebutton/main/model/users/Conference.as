@@ -17,12 +17,15 @@
 *
 */
 package org.bigbluebutton.main.model.users {
+	import mx.charts.CategoryAxis;
 	import mx.collections.ArrayCollection;
 	import mx.collections.Sort;
+	import mx.controls.Alert;
 	
 	import org.bigbluebutton.common.LogUtil;
 	import org.bigbluebutton.common.Role;
 	import org.bigbluebutton.core.BBB;
+	import org.bigbluebutton.core.managers.UserManager;
 	import org.bigbluebutton.core.model.Config;
 	import org.bigbluebutton.core.vo.CameraSettingsVO;
 	import org.bigbluebutton.core.vo.LockSettingsVO;
@@ -445,7 +448,8 @@ package org.bigbluebutton.main.model.users {
 			lockedLayout:Boolean,
 			lockOnJoin:Boolean,
 			lockOnJoinConfigurable:Boolean,
-			disableJoiningViewers:Boolean
+			disableJoiningViewers:Boolean,
+			lockJoinForViewersOnly:Boolean
 			
 			var lockConfig:XML;
 			
@@ -504,12 +508,21 @@ package org.bigbluebutton.main.model.users {
 				disableJoiningViewers = false;
 			}
 			
+			try
+			{
+				lockJoinForViewersOnly = (lockConfig.@lockJoinForViewersOnly.toUpperCase() == "TRUE");
+			}
+			catch(e:Error)
+			{
+				lockJoinForViewersOnly = false
 			
+			}
 			trace(LOG + " init lock settings from config");
-      
-			lockSettings = new LockSettingsVO(disableCam, disableMic, disablePrivateChat, disablePublicChat, lockedLayout, lockOnJoin, lockOnJoinConfigurable,disableJoiningViewers);
+			
+			lockSettings = new LockSettingsVO(disableCam, disableMic, disablePrivateChat, disablePublicChat, lockedLayout, lockOnJoin, lockOnJoinConfigurable,disableJoiningViewers,lockJoinForViewersOnly);
 			
 			setLockSettings(lockSettings);
+			
 		}
 		
 		public function getMyUser():BBBUser {

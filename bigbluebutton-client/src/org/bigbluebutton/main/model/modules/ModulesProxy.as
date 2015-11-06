@@ -88,7 +88,10 @@ package org.bigbluebutton.main.model.modules
 		public function loadAllModules(params:ConferenceParameters):void{
 			var conference:Conference = UserManager.getInstance().getConference();
 			
-			if(conference.getLockSettings().getDisableJoiningViewers() && (conference.getMyRole() == Role.VIEWER || conference.getMyRole() == Role.MODERATOR)){
+			var lockAll :Boolean = (conference.getLockSettings().getLockJoinForViewersOnly()==false) && conference.getLockSettings().getDisableJoiningViewers() && (conference.getMyRole() == Role.VIEWER || conference.getMyRole() == Role.MODERATOR);
+			var lockViewersOnly:Boolean = conference.getLockSettings().getLockJoinForViewersOnly() && conference.getLockSettings().getDisableJoiningViewers() && conference.getMyRole() == Role.VIEWER;
+			
+			if(lockViewersOnly || lockAll){
 				var audioSelection:IFlexDisplayObject = PopUpManager.createPopUp(FlexGlobals.topLevelApplication as DisplayObject, Dialog, true);
 	            		  PopUpManager.centerPopUp(audioSelection);
 			}else{

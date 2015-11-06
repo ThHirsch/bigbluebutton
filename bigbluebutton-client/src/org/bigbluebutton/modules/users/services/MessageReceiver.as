@@ -170,7 +170,8 @@ public class MessageReceiver implements IMessageListener
 	  														map.lockedLayout,
 	  														map.lockOnJoin,
 	  														map.lockOnJoinConfigurable,
-	  														map.disableJoiningViewers);
+	  														map.disableJoiningViewers,
+	  														map.lockJoinForViewersOnly);
       UserManager.getInstance().getConference().setLockSettings(lockSettings);
     }
     
@@ -191,7 +192,7 @@ public class MessageReceiver implements IMessageListener
 	  var perm:Object = map.meetingState.permissions;
 
 	  var lockSettings:LockSettingsVO = new LockSettingsVO(perm.disableCam, perm.disableMic,
-		  perm.disablePrivChat, perm.disablePubChat, perm.lockedLayout, perm.lockOnJoin, perm.lockOnJoinConfigurable,perm.disableJoiningViewers);
+		  perm.disablePrivChat, perm.disablePubChat, perm.lockedLayout, perm.lockOnJoin, perm.lockOnJoinConfigurable,perm.disableJoiningViewers,perm.lockJoinForViewersOnly);
 	  UserManager.getInstance().getConference().setLockSettings(lockSettings);
 
 	  UserManager.getInstance().getConference().applyLockSettings();
@@ -217,7 +218,7 @@ public class MessageReceiver implements IMessageListener
       var perm:Object = map.permissions;
       
       var lockSettings:LockSettingsVO = new LockSettingsVO(perm.disableCam, perm.disableMic,
-                                                 perm.disablePrivChat, perm.disablePubChat, perm.lockedLayout, perm.lockOnJoin, perm.lockOnJoinConfigurable,perm.disableJoiningViewers);
+                                                 perm.disablePrivChat, perm.disablePubChat, perm.lockedLayout, perm.lockOnJoin, perm.lockOnJoinConfigurable,perm.disableJoiningViewers,perm.lockJoinForViewersOnly);
       UserManager.getInstance().getConference().setLockSettings(lockSettings);
       MeetingModel.getInstance().meetingMuted = map.meetingMuted;
 

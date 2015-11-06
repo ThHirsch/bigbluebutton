@@ -26,8 +26,9 @@ package org.bigbluebutton.core.vo
 		private var disablePrivateChat:Boolean;
 		private var disablePublicChat:Boolean;
 		private var disableJoiningViewers:Boolean;
+		private var lockJoinForViewersOnly:Boolean;
 
-		public function LockSettings(pAllowModeratorLocking:Boolean, pDisableCam:Boolean, pDisableMic:Boolean, pDisablePrivateChat:Boolean, pDisablePublicChat:Boolean, pDisableJoiningViewers:Boolean)
+		public function LockSettings(pAllowModeratorLocking:Boolean, pDisableCam:Boolean, pDisableMic:Boolean, pDisablePrivateChat:Boolean, pDisablePublicChat:Boolean, pDisableJoiningViewers:Boolean,pLockJoinForViewersOnly:Boolean)
 		{
 			this.allowModeratorLocking = pAllowModeratorLocking;
 			this.disableCam = pDisableCam;
@@ -35,6 +36,7 @@ package org.bigbluebutton.core.vo
 			this.disablePrivateChat = pDisablePrivateChat;
 			this.disablePublicChat = pDisablePublicChat;
 			this.disableJoiningViewers = pDisableJoiningViewers;
+			this.lockJoinForViewersOnly = pLockJoinForViewersOnly;
 		}
 		
 		public function toMap():Object {
@@ -44,7 +46,8 @@ package org.bigbluebutton.core.vo
 				disableMic: this.disableMic,
 				disablePrivateChat: this.disablePrivateChat,
 				disablePublicChat: this.disablePublicChat,
-				disableJoiningViewers:  this.disableJoiningViewers
+				disableJoiningViewers:  this.disableJoiningViewers,
+				lockJoinForViewersOnly : this.lockJoinForViewersOnly
 			};
 			
 			return map;
@@ -68,6 +71,10 @@ package org.bigbluebutton.core.vo
 		
 		public function getDisablePublicChat():Boolean {
 			return disablePublicChat;
+		}
+		
+		public function getLockJoinForViewersOnly():Boolean{
+			return this.lockJoinForViewersOnly;
 		}
 	}
 }

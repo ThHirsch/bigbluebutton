@@ -59,6 +59,7 @@ class UsersClientMessageSender(service: ConnectionInvokerService) extends OutMes
     args.put("lockOnJoin", perms.lockOnJoin:java.lang.Boolean);
     args.put("lockOnJoinConfigurable", perms.lockOnJoinConfigurable:java.lang.Boolean);
     args.put("disableJoiningViewers",perms.disableJoiningViewers:java.lang.Boolean);
+    args.put("lockJoinForViewersOnly",perms.lockJoinForViewersOnly:java.lang.Boolean);
 
     args
 	}
@@ -102,6 +103,7 @@ class UsersClientMessageSender(service: ConnectionInvokerService) extends OutMes
     args.put("lockOnJoin", msg.permissions.lockOnJoin:java.lang.Boolean);
     args.put("lockOnJoinConfigurable", msg.permissions.lockOnJoinConfigurable:java.lang.Boolean);
     args.put("disableJoiningViewers", msg.permissions.disableJoiningViewers:java.lang.Boolean);
+    args.put("lockJoinForViewersOnly",msg.permissions.lockJoinForViewersOnly:java.lang.Boolean);
     
 	  var users = new ArrayList[java.util.HashMap[String, Object]];
       msg.applyTo.foreach(uvo => {		

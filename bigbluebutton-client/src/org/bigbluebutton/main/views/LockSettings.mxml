@@ -58,6 +58,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 			[Bindable] public var lockOnJoin:Boolean = false;
 			[Bindable] public var lockOnJoinConfigurable:Boolean = false;
 			[Bindable] public var disableJoiningViewers:Boolean = false;
+			[Bindable] public var lockJoinForViewersOnly:Boolean = false;
 			
 			  
 			override public function move(x:Number, y:Number):void {
@@ -72,8 +73,9 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 			
 			
 			private function onSaveClicked():void {
+				
 				var event:LockControlEvent = new LockControlEvent(LockControlEvent.SAVE_LOCK_SETTINGS);
-				var lockSettings:LockSettingsVO = new LockSettingsVO(chkDisableWebcam.selected, chkDisableMicrophone.selected, chkDisablePrivateChat.selected, chkDisablePublicChat.selected, chkDisableLayout.selected, chkLockOnJoin.selected, lockOnJoinConfigurable,chkDisableJoiningViewers.selected);
+				var lockSettings:LockSettingsVO = new LockSettingsVO(chkDisableWebcam.selected, chkDisableMicrophone.selected, chkDisablePrivateChat.selected, chkDisablePublicChat.selected, chkDisableLayout.selected, chkLockOnJoin.selected, lockOnJoinConfigurable,chkDisableJoiningViewers.selected,UserManager.getInstance().getConference().getLockSettings().getLockJoinForViewersOnly());
 				
 				event.payload = lockSettings.toMap();
 				this.dispatchEvent(event);
@@ -140,7 +142,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 		
 		<mx:HBox verticalAlign="top" width="100%">
 			<mx:Label width="70%" styleName="lockSettingsDefaultLabelStyle"
-					  text="{ResourceUtil.getInstance().getString('bbb.lockSettings.disableJoiningViewers')}" />
+					  text="{UserManager.getInstance().getConference().getLockSettings().getLockJoinForViewersOnly()?ResourceUtil.getInstance().getString('bbb.lockSettings.lbl.lockJoinForViewersOnly'):ResourceUtil.getInstance().getString('bbb.lockSettings.lbl.lockJoinForAll')}" />
 			<mx:HBox width="30%">
 				<mx:Spacer width="50%" />
 				<mx:CheckBox id="chkDisableJoiningViewers" selected="{disableJoiningViewers}" />

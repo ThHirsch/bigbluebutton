@@ -35,6 +35,7 @@
 			lockOnJoin="false"
 			lockOnJoinConfigurable="true"
 			disableJoiningViewers = "true"
+			lockJoinForViewersOnly="true"
 	/>
 
 	<modules>

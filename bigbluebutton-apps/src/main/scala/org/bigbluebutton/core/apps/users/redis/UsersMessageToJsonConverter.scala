@@ -87,6 +87,7 @@ object UsersMessageToJsonConverter {
     payload.put("lockOnJoin", msg.permissions.lockOnJoin)
     payload.put("lockOnJoinConfigurable", msg.permissions.lockOnJoin)
     payload.put("disableJoiningViewers", msg.permissions.disableJoiningViewers)
+    payload.put("lockJoinForViewersOnly",msg.permissions.lockJoinForViewersOnly)
     
     val users = new java.util.ArrayList[java.util.Map[String, Any]]
     msg.applyTo.foreach(uvo => {    

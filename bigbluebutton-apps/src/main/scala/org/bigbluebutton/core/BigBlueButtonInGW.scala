@@ -95,6 +95,7 @@ class BigBlueButtonInGW(bbbGW: BigBlueButtonGateway, presUtil: PreuploadedPresen
     var lockOnJoin = s.getOrElse("lockOnJoin", false)
     var lockOnJoinConfigurable = s.getOrElse("lockOnJoinConfigurable", false)
     var disableJoiningViewers = s.getOrElse("disableJoiningViewers",false)
+    var lockJoinForViewersOnly = s.getOrElse("lockJoinForViewersOnly",false);
 
     val permissions = new Permissions(disableCam = disableCam,
                                       disableMic = disableMic,
@@ -103,7 +104,8 @@ class BigBlueButtonInGW(bbbGW: BigBlueButtonGateway, presUtil: PreuploadedPresen
                                       lockedLayout = lockedLayout,
                                       lockOnJoin = lockOnJoin,
                                       lockOnJoinConfigurable = lockOnJoinConfigurable,
-                                      disableJoiningViewers = disableJoiningViewers)
+                                      disableJoiningViewers = disableJoiningViewers,
+      lockJoinForViewersOnly = lockJoinForViewersOnly)
 
 
     bbbGW.accept(new SetLockSettings(meetingID, userId, permissions))
@@ -123,6 +125,7 @@ class BigBlueButtonInGW(bbbGW: BigBlueButtonGateway, presUtil: PreuploadedPresen
     val lockOnJoin = s.getOrElse("lockOnJoin", false)
     val lockOnJoinConfigurable = s.getOrElse("lockOnJoinConfigurable", false)
     val disableJoiningViewers = s.getOrElse("disableJoiningViewers", false)
+    val lockJoinForViewersOnly = s.getOrElse("lockJoinForViewersOnly",false)
     val permissions = new Permissions(disableCam = disableCam,
                                       disableMic = disableMic,
                                       disablePrivChat = disablePrivChat,
@@ -130,7 +133,8 @@ class BigBlueButtonInGW(bbbGW: BigBlueButtonGateway, presUtil: PreuploadedPresen
                                       lockedLayout = lockedLayout,
                                       lockOnJoin = lockOnJoin,
                                       lockOnJoinConfigurable = lockOnJoinConfigurable,
-                                      disableJoiningViewers = disableJoiningViewers)
+                                      disableJoiningViewers = disableJoiningViewers,
+      lockJoinForViewersOnly = lockJoinForViewersOnly)
     bbbGW.accept(new InitLockSettings(meetingID, permissions))
   }
   

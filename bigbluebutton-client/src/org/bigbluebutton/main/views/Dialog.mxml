@@ -21,7 +21,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
 <mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
 				xmlns:mate="http://mate.asfusion.com/"
-				width="500" height="140" 
+				width="660" height="140" 
 				initialize="init()" 
 				styleName="micSettingsWindowStyle"
 				showCloseButton="false">
@@ -59,7 +59,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 		<mx:HBox width="100%" height="65%">
 			<mx:TextArea borderSkin="{null}" verticalScrollPolicy="off" 
 						 editable="false" tabIndex="{baseIndex}"
-						 text="{ResourceUtil.getInstance().getString('bbb.disableJoiningViewers.logout.msg')}"
+						 text="{UserManager.getInstance().getConference().getLockSettings().getLockJoinForViewersOnly()?ResourceUtil.getInstance().getString('bbb.locksettings.msg.lockJoinForViewersOnly'):ResourceUtil.getInstance().getString('bbb.locksettings.msg.lockJoinForAll')}"
 						 styleName="micSettingsWindowTitleStyle"
 						 width="100%" height="100%" />
 		</mx:HBox>

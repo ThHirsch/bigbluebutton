@@ -42,7 +42,8 @@ case class Permissions(
   lockedLayout:Boolean = false,
   lockOnJoin:Boolean = false,
   lockOnJoinConfigurable:Boolean = false,
-  disableJoiningViewers:Boolean = false
+  disableJoiningViewers:Boolean = false,
+  lockJoinForViewersOnly:Boolean = false
 )
 
 case class RegisteredUser (
