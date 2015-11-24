@@ -21,6 +21,39 @@ grails.project.fork = [
     console: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256]
 ]
 
+
+
+//if (environment == "preproduction"){
+//    grails.project.war.file = "target/${appName}-${grails.util.Environment.current.name}-${appVersion}.war"
+//}else if(environment == "production"){
+//    grails.project.war.file = "target/${appName}.war"
+//}
+grails.war.resources = {stagingDir,args->
+//   copy(file: "grails-app/store/**", toFile: "${stagingDir}/store")
+    def environment = grails.util.Environment.current.name
+
+    if(environment.equals("DEV")){
+        println "Environment is set to dev"
+       // grails.config.locations = [ "classpath:DEV/bigbluebutton.properties"]
+        copy(file: "grails-app/bbb-profiles/DEV/bigbluebutton.properties", toFile: "${stagingDir}/WEB-INF/classes/bigbluebutton.properties")
+
+
+    }else if(environment.equals("QA")){
+        println "Environment is set to qa"
+        copy(file: "grails-app/bbb-profiles/QA/bigbluebutton.properties", toFile: "${stagingDir}/WEB-INF/classes/bigbluebutton.properties")
+
+    }else if(environment.equals("PROD")){
+        println "Environment is set to prod"
+        copy(file: "grails-app/bbb-profiles/PROD/bigbluebutton.properties", toFile: "${stagingDir}/WEB-INF/classes/bigbluebutton.properties")
+
+    }else{
+        println "Environment is set to local"
+        copy(file: "grails-app/bbb-profiles/bigbluebutton.properties", toFile: "${stagingDir}/WEB-INF/classes/bigbluebutton.properties")
+
+    }
+}
+
+
 grails.project.dependency.resolver = "maven" // or ivy
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies

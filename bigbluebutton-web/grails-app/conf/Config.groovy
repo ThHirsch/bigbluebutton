@@ -110,7 +110,7 @@ log4j = {
   }
 
   root {
-    warn 'dailyRollingFileAppender', 'consoleAppender'
+    info 'dailyRollingFileAppender', 'consoleAppender'
     additivity = true
   }
 

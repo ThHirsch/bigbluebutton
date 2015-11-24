@@ -616,7 +616,8 @@
 
     </target>
 
-    <target name="dist">
+
+    <target name="dist" depends="init-ant-contrib">
 
         <mkdir dir="${TEMP_OUTPUT}"></mkdir>
         <mkdir dir="${TEMP_OUTPUT}/bbb-delvag-client"></mkdir>
@@ -627,10 +628,16 @@
         </copy>
 
         <delete file="${TEMP_OUTPUT}/bbb-delvag-client/client/conf/config.xml"></delete>
-        <copy file="${BASE_DIR}/resources/config.xml" todir="${TEMP_OUTPUT}/bbb-delvag-client/client/conf/"></copy>
+        <copy file="${BASE_DIR}/resources/https-chages/config.xml" todir="${TEMP_OUTPUT}/bbb-delvag-client/client/conf/"></copy>
+        <delete file="${TEMP_OUTPUT}/bbb-delvag-client/client/lib/bbb_webrtc_bridge_sip.js"></delete>
+        <copy file="${BASE_DIR}/resources/https-chages/bbb_webrtc_bridge_sip.js"  todir="${TEMP_OUTPUT}/bbb-delvag-client/client/lib/"></copy>
+        <delete file="${TEMP_OUTPUT}/bbb-delvag-client/client/BigBlueButton.html"></delete>
+        <copy file="${BASE_DIR}/resources/https-chages/BigBlueButton.html"  todir="${TEMP_OUTPUT}/bbb-delvag-client/client/"></copy>
+
 
         <echo message="TEMP OUTPUT value is : ${TEMP_OUTPUT}"></echo>
         <var name="OUTPUT_DIR" value="${TEMP_OUTPUT}/bbb-delvag-client/client"/>
+
 
         <antcall target="set-version"/>
         <antcall target="compress-client"/>
