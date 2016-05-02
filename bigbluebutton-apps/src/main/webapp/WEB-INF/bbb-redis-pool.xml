@@ -33,6 +33,8 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
   		</constructor-arg>
         <constructor-arg index="1" value="${redis.host}"/>
         <constructor-arg index="2" value="${redis.port}"/>
+		<constructor-arg index="3" value="2000"/>
+		<constructor-arg index="4" value="${redis.pass}"/>
     </bean>
 	    
     <bean id="config" class="org.bigbluebutton.conference.service.recorder.GenericObjectPoolConfigWrapper">

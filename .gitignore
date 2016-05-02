@@ -16,5 +16,9 @@ bbb-api-demo/.project
 bigbluebutton-web/.settings*
 bigbluebutton-web/.classpath
 bigbluebutton-web/.project
-.idea
+/.idea
 *.iml
+*.jar
+gradlew
+gradlew.bat
+gradle-wrapper.properties

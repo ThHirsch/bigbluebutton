@@ -458,8 +458,6 @@
     <target name="copy-resource-files"  depends="init-ant-contrib">
         <echo message=" environment ${BUILD_ENV}"></echo>
 
-
-
         <copy todir="${OUTPUT_DIR}/swfobject/" >
             <fileset dir="${PROD_RESOURCES_DIR}/swfobject" />
         </copy>
@@ -474,12 +472,18 @@
         <copy file="${PROD_RESOURCES_DIR}/DeskshareStandalone.html" todir="${OUTPUT_DIR}" overwrite="true"/>
         <copy file="${PROD_RESOURCES_DIR}/bbb.gif" todir="${OUTPUT_DIR}" overwrite="true"/>
         <copy file="${PROD_RESOURCES_DIR}/avatar.png" todir="${OUTPUT_DIR}" overwrite="true"/>
-        <copy file="${PROD_RESOURCES_DIR}/locales.xml" todir="${OUTPUT_DIR}/conf" overwrite="true"/>
         <copy file="${PROD_RESOURCES_DIR}/expressInstall.swf" todir="${OUTPUT_DIR}" overwrite="true"/>
-        <copy file="${PROD_RESOURCES_DIR}/example-info-data.xml" todir="${OUTPUT_DIR}/conf" overwrite="true"/>
-        <copy file="${PROD_RESOURCES_DIR}/layout.xml" todir="${OUTPUT_DIR}/conf" overwrite="true"/>
-        <copy file="${PROD_RESOURCES_DIR}/webtv-layout.xml" todir="${OUTPUT_DIR}/conf" overwrite="true"/>
-        <copy file="${RESOURCES_DIR}/config.xml" todir="${OUTPUT_DIR}/conf/" overwrite="true"/>
+
+        <copy file="${PROD_RESOURCES_DIR}/conf/locales.xml" todir="${OUTPUT_DIR}/conf" overwrite="true"/>
+        <copy file="${PROD_RESOURCES_DIR}/conf/layout.xml" todir="${OUTPUT_DIR}/conf" overwrite="true"/>
+        <copy file="${PROD_RESOURCES_DIR}/conf/layout.org.xml" todir="${OUTPUT_DIR}/conf" overwrite="true"/>
+        <copy file="${PROD_RESOURCES_DIR}/conf/layout-meeting.xml" todir="${OUTPUT_DIR}/conf" overwrite="true"/>
+        <copy file="${PROD_RESOURCES_DIR}/conf/layout-meeting.org.xml" todir="${OUTPUT_DIR}/conf" overwrite="true"/>
+        <copy file="${PROD_RESOURCES_DIR}/conf/layout-webtv.xml" todir="${OUTPUT_DIR}/conf" overwrite="true"/>
+        <copy file="${PROD_RESOURCES_DIR}/conf/layout-webtv.org.xml" todir="${OUTPUT_DIR}/conf" overwrite="true"/>
+        <copy file="${PROD_RESOURCES_DIR}/conf/example-info-data.xml" todir="${OUTPUT_DIR}/conf" overwrite="true"/>
+
+        <copy file="${PROD_RESOURCES_DIR}/conf/config.xml" todir="${OUTPUT_DIR}/conf/" overwrite="true"/>
     </target>
 
 

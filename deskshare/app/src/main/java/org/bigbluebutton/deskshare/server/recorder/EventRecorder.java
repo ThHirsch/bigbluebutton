@@ -31,10 +31,12 @@ public class EventRecorder implements RecordStatusListener {
 	private static final String COLON=":";
 	private String host;
 	private int port;
+	private String password;
 
-	public EventRecorder(String host, int port){
+	public EventRecorder(String host, int port, String password){
 		this.host = host;
-		this.port = port;		
+		this.port = port;
+		this.password = password;
 	}
 	
   private Long genTimestamp() {
@@ -43,6 +45,7 @@ public class EventRecorder implements RecordStatusListener {
   
 	private void record(String session, RecordEvent message) {
 		Jedis jedis = new Jedis(host, port);
+		jedis.auth(password);
 		Long msgid = jedis.incr("global:nextRecordedMsgId");
 		jedis.hmset("recording" + COLON + session + COLON + msgid, message.toMap());
 		jedis.rpush("meeting" + COLON + session + COLON + "recordings", msgid.toString());						

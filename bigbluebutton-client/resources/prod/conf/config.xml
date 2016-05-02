@@ -11,13 +11,33 @@
     <skinning enabled="true" url="http://<HOST_ADDRESS>/client/branding/css/BBBDefault.css.swf" />
     <shortcutKeys showButton="true" />
     <browserVersions chrome="CHROME_VERSION" firefox="FIREFOX_VERSION" flash="FLASH_VERSION" java="1.7.0_51" />
-    <layout showLogButton="true" defaultLayout="bbb.layout.name.defaultlayout"
-            showToolbar="true" showFooter="true" showMeetingName="true" showHelpButton="true"
-            showLogoutWindow="true" showLayoutTools="true" showLayoutSelection="true" showLayoutApplyToViewers="false" confirmLogout="true"
-            showRecordingNotification="true"/>
+    <layout defaultLayout="bbb.layout.name.defaultlayout"
+			showLogButton="true"
+            showToolbar="true"
+			showFooter="true"
+			showMeetingName="true"
+			showHelpButton="true"
+            showLogoutWindow="true"
+			showLayoutTools="true"
+				showLayoutSelection="true"
+				showLayoutApplyToViewers="true"
+			confirmLogout="true"
+            showRecordingNotification="true"
+			showNetworkMonitor="false"
+			/>
+
     <meeting muteOnStart="false" />
-    <lock disableCamForLockedUsers="false" disableMicForLockedUsers="false" disablePrivateChatForLockedUsers="false"
-          disablePublicChatForLockedUsers="false" lockLayoutForLockedUsers="false" lockOnJoin="true" lockOnJoinConfigurable="false"/>
+
+    <lock	disableCamForLockedUsers="false"
+			disableMicForLockedUsers="false"
+			disablePrivateChatForLockedUsers="false"
+			disablePublicChatForLockedUsers="false"
+			lockLayoutForLockedUsers="false"
+			lockOnJoin="true"
+			lockOnJoinConfigurable="true"
+			disableJoiningViewers="true"
+			lockJoinForViewersOnly="true"
+			/>
 
     <modules>
 
@@ -58,7 +78,7 @@
                 skipCheck="false"
                 showButton="true"
                 enabledEchoCancel="true"
-                useWebRTCIfAvailable="true"
+                useWebRTCIfAvailable="false"
                 showPhoneOption="false"
                 echoTestApp="9196"
                 dependsOn="UsersModule"
@@ -69,8 +89,8 @@
                 dependson = "UsersModule"
                 videoQuality = "100"
                 presenterShareOnly = "false"
-                controlsForPresenter = "false"
-                resolutions = "320x240,640x480,1280x720"
+                controlsForPresenter = "true"
+                resolutions = "320x240,640x480,1280x720,1920x1080"
                 autoStart = "false"
                 skipCamSettingsCheck="false"
                 showButton = "true"
@@ -79,7 +99,7 @@
                 viewerWindowMaxed = "false"
                 viewerWindowLocation = "top"
                 camKeyFrameInterval = "30"
-                camModeFps = "10"
+                camModeFps = "25"
                 camQualityBandwidth = "0"
                 camQualityPicture = "90"
                 smoothVideo="false"
