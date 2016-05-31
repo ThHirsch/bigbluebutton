@@ -25,11 +25,15 @@ package org.bigbluebutton.main.model
 		[Bindable] public var showDebugWindow:Boolean = true;
 		[Bindable] public var showLogButton:Boolean = true;
 		[Bindable] public var showToolbar:Boolean = true;
-    [Bindable] public var showFooter:Boolean = true;
-    [Bindable] public var showMeetingName:Boolean = true;
+   		[Bindable] public var showFooter:Boolean = true;
+   		[Bindable] public var showMeetingName:Boolean = true;
 		[Bindable] public var showHelpButton:Boolean = true;
 		[Bindable] public var showLogoutWindow:Boolean = true;
 		[Bindable] public var showLayoutTools:Boolean = true;
+		[Bindable] public var showLayoutSelection:Boolean = true;
+		[Bindable] public var showLayoutApplyToViewers:Boolean = true;
+		
+		
 		[Bindable] public var confirmLogout:Boolean = true;
 		[Bindable] public var showRecordingNotification:Boolean = true;
 		
@@ -55,9 +59,9 @@ package org.bigbluebutton.main.model
 					confirmLogout = (vxml.@confirmLogout.toString().toUpperCase() == "TRUE") ? true : false;
 				}
 
-        if (vxml.@showFooter != undefined) {
-          showFooter = (vxml.@showFooter.toString().toUpperCase() == "TRUE") ? true : false;
-        }
+       			 if (vxml.@showFooter != undefined) {
+          			showFooter = (vxml.@showFooter.toString().toUpperCase() == "TRUE") ? true : false;
+        		}
         
                 if (vxml.@showMeetingName != undefined) {
                     showMeetingName = (vxml.@showMeetingName.toString().toUpperCase() == "TRUE") ? true : false;
@@ -70,6 +74,9 @@ package org.bigbluebutton.main.model
 				if (vxml.@showLogoutWindow != undefined) {
 					showLogoutWindow = (vxml.@showLogoutWindow.toString().toUpperCase() == "TRUE") ? true : false;
 				}
+				if(vxml.@showLayoutApplyToViewers != undefined){
+					showLayoutApplyToViewers = (vxml.@showLayoutApplyToViewers.toString().toUpperCase() == "TRUE") ? true : false;
+				}
         
         if (vxml.@defaultLayout != undefined) {
           defaultLayout = vxml.@defaultLayout.toString();
@@ -77,6 +84,10 @@ package org.bigbluebutton.main.model
 		
 		if(vxml.@showLayoutTools != undefined){
 			showLayoutTools = (vxml.@showLayoutTools.toString().toUpperCase() == "TRUE") ? true : false;
+		}
+		
+		if(vxml.@showLayoutSelection != undefined){
+			showLayoutSelection = (vxml.@showLayoutSelection.toString().toUpperCase() == "TRUE") ? true : false;
 		}
 		
 		if(vxml.@showRecordingNotification != undefined){
