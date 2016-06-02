@@ -1,0 +1,144 @@
+<?xml version="1.0" ?>
+<config>
+    <localeversion suppressWarning="false">0.9.0</localeversion>
+    <version>VERSION</version>
+    <help url="https://<HOST_ADDRESS>/help.html"/>
+    <javaTest url="https://<HOST_ADDRESS>/testjava.html"/>
+    <porttest host="<HOST_ADDRESS>" application="video/portTest" timeout="10000"/>
+    <bwMon server="<HOST_ADDRESS>" application="video/bwTest"/>
+    <application uri="rtmp://<HOST_ADDRESS>/bigbluebutton" host="https://<HOST_ADDRESS>/bigbluebutton/api/enter"/>
+    <language userSelectionEnabled="true" />
+    <skinning enabled="true" url="https://<HOST_ADDRESS>/client/branding/css/BBBDefault.css.swf" />
+    <shortcutKeys showButton="true" />
+    <browserVersions chrome="CHROME_VERSION" firefox="FIREFOX_VERSION" flash="FLASH_VERSION" java="1.7.0_51" />
+    <layout showLogButton="true" defaultLayout="bbb.layout.name.defaultlayout"
+            showToolbar="true" showFooter="true" showMeetingName="true" showHelpButton="true"
+            showLogoutWindow="true" showLayoutTools="true" confirmLogout="true"  showLayoutSelection="true"
+            showLayoutApplyToViewers="true"
+            showRecordingNotification="true"/>
+    <meeting muteOnStart="false" />
+    <logging enabled="true" target="trace" level="info" format="{dateUTC} {time} :: {name} :: [{logLevel}] {message}" uri="https://<HOST_ADDRESS>"/>
+    <lock disableCamForLockedUsers="false" disableMicForLockedUsers="false" disablePrivateChatForLockedUsers="false"
+          disablePublicChatForLockedUsers="false" lockLayoutForLockedUsers="false" lockOnJoin="true" lockOnJoinConfigurable="false"/>
+
+    <modules>
+
+        <module name="ChatModule" url="https://<HOST_ADDRESS>/client/ChatModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/bigbluebutton"
+                dependsOn="UsersModule"
+                privateEnabled="true"
+                fontSize="12"
+                position="top-right"
+                baseTabIndex="701"
+                colorPickerIsVisible="false"
+                maxMessageLength="1024"
+        />
+
+        <module name="UsersModule" url="https://<HOST_ADDRESS>/client/UsersModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/bigbluebutton"
+                allowKickUser="true"
+                hideViewers="true"
+                enableEmojiStatus="true"
+                enableSettingsButton="true"
+                baseTabIndex="301"
+        />
+
+
+        <module name="DeskShareModule"
+                url="https://<HOST_ADDRESS>/client/DeskShareModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/deskShare"
+                publishURI="<HOST_ADDRESS>"
+                useTLS="false"
+                showButton="true"
+                autoStart="false"
+                autoFullScreen="false"
+                baseTabIndex="201"
+        />
+
+        <module name="PhoneModule" url="https://<HOST_ADDRESS>/client/PhoneModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/sip"
+                autoJoin="true"
+                listenOnlyMode="true"
+                presenterShareOnly="false"
+                skipCheck="false"
+                showButton="true"
+                enabledEchoCancel="true"
+                useWebRTCIfAvailable="true"
+                showPhoneOption="false"
+                echoTestApp="9196"
+                dependsOn="UsersModule"
+        />
+
+        <module name="VideoconfModule" url="https://<HOST_ADDRESS>/client/VideoconfModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/video"
+                dependson = "UsersModule"
+                baseTabIndex="401"
+                presenterShareOnly = "false"
+                controlsForPresenter = "false"
+                autoStart = "false"
+                skipCamSettingsCheck="false"
+                showButton = "true"
+                showCloseButton = "true"
+                publishWindowVisible = "true"
+                viewerWindowMaxed = "false"
+                viewerWindowLocation = "top"
+                smoothVideo="false"
+                applyConvolutionFilter="false"
+                convolutionFilter="-1, 0, -1, 0, 6, 0, -1, 0, -1"
+                filterBias="0"
+                filterDivisor="4"
+                displayAvatar = "false"
+                focusTalking = "false"
+                glowColor = "0x4A931D"
+                glowBlurSize = "30.0"
+                priorityRatio = "0.67"
+        />
+
+        <module name="WhiteboardModule" url="https://<HOST_ADDRESS>/client/WhiteboardModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/bigbluebutton"
+                dependsOn="PresentModule"
+                baseTabIndex="601"
+                whiteboardAccess="presenter"
+                keepToolbarVisible="false"
+        />
+
+        <module name="PollingModule" url="https://<HOST_ADDRESS>/client/PollingModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/bigbluebutton"
+                dependsOn="PresentModule"
+        />
+
+        <module name="PresentModule" url="https://<HOST_ADDRESS>/client/PresentModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/bigbluebutton"
+                host="https://<HOST_ADDRESS>"
+                showPresentWindow="true"
+                showWindowControls="true"
+                openExternalFileUploadDialog="false"
+                dependsOn="UsersModule"
+                baseTabIndex="501"
+                maxFileSize="30"
+        />
+
+        <module name="LayoutModule" url="https://<HOST_ADDRESS>/client/LayoutModule.swf?v=VERSION"
+                uri="rtmp://<HOST_ADDRESS>/bigbluebutton"
+                layoutConfig="https://<HOST_ADDRESS>/client/conf/layout.xml"
+                enableEdit="false"
+        />
+
+        <!--
+            <module name="NotesModule" url="https://<HOST_ADDRESS>/client/NotesModule.swf?v=VERSION"
+              saveURL="https://<HOST_ADDRESS>"
+              position="top-left"
+            />
+            
+            <module name="BroadcastModule" url="https://<HOST_ADDRESS>/client/BroadcastModule.swf?v=VERSION"
+              uri="rtmp://<HOST_ADDRESS>/bigbluebutton"
+              streamsUri="https://<HOST_ADDRESS>/streams.xml"
+              position="top-left"
+              showStreams="true"
+              autoPlay="false"
+              dependsOn="UsersModule"
+            />
+        -->
+
+    </modules>
+</config>
