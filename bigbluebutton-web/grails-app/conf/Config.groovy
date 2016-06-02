@@ -109,10 +109,10 @@ log4j = {
                   layout:pattern(conversionPattern: '%d{yyyy-MM-dd HH:mm:ss,SSSXXX} %-5p %c %x - %m%n')
     }
 
-    root {
-        warn 'dailyRollingFileAppender', 'consoleAppender'
-        additivity = true
-    }
+  root {
+    info 'dailyRollingFileAppender', 'consoleAppender'
+    additivity = true
+  }
 
     debug  logfile:    'org.bigbluebutton.*',
                        'grails.app.controllers',
@@ -129,6 +129,5 @@ log4j = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
-
     debug  'org.bigbluebutton'
 }
