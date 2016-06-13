@@ -2,24 +2,37 @@
 <config>
     <localeversion suppressWarning="false">0.9.0</localeversion>
     <version>VERSION</version>
-    <help url="http://<HOST_ADDRESS>/help.html"/>
+    <help url="content/help/WebTV_Help.pdf"/>
     <javaTest url="http://<HOST_ADDRESS>/testjava.html"/>
-    <porttest host="<HOST_ADDRESS>" application="video/portTest" timeout="10000"/>
+    <porttest host="<HOST_ADDRESS>" application="video/portTest" timeout="3000"/>
     <bwMon server="<HOST_ADDRESS>" application="video/bwTest"/>
     <application uri="rtmp://<HOST_ADDRESS>/bigbluebutton" host="http://<HOST_ADDRESS>/bigbluebutton/api/enter"/>
     <language userSelectionEnabled="true" />
     <skinning enabled="true" url="http://<HOST_ADDRESS>/client/branding/css/BBBDefault.css.swf" />
     <shortcutKeys showButton="true" />
     <browserVersions chrome="CHROME_VERSION" firefox="FIREFOX_VERSION" flash="FLASH_VERSION" java="1.7.0_51" />
-    <layout showLogButton="true" defaultLayout="bbb.layout.name.defaultlayout"
-            showToolbar="true" showFooter="true" showMeetingName="true" showHelpButton="true"
-            showLogoutWindow="true" showLayoutTools="true" confirmLogout="true"  showLayoutSelection="true"
-            showLayoutApplyToViewers="true"
-            showRecordingNotification="true"/>
+    <layout  defaultLayout="bbb.layout.name.defaultlayout" 
+    		showLogButton="true"
+            	showToolbar="true" 
+		showFooter="true" 
+		showMeetingName="true" 
+		showHelpButton="true"
+            	showLogoutWindow="true" 
+		showLayoutTools="true" 
+		confirmLogout="true"  
+		showLayoutSelection="true"            
+		showLayoutApplyToViewers="true"            
+		showRecordingNotification="true"/>
     <meeting muteOnStart="false" />
+    
     <logging enabled="true" target="trace" level="info" format="{dateUTC} {time} :: {name} :: [{logLevel}] {message}" uri="http://<HOST_ADDRESS>"/>
-    <lock disableCamForLockedUsers="false" disableMicForLockedUsers="false" disablePrivateChatForLockedUsers="false"
-          disablePublicChatForLockedUsers="false" lockLayoutForLockedUsers="false" lockOnJoin="true" lockOnJoinConfigurable="false"/>
+    <lock disableCamForLockedUsers="true" 
+		disableMicForLockedUsers="false" 
+		disablePrivateChatForLockedUsers="false"
+          	disablePublicChatForLockedUsers="false" 
+		lockLayoutForLockedUsers="true" 
+		lockOnJoin="true" 
+		lockOnJoinConfigurable="true"/>
 
     <modules>
 
@@ -27,10 +40,10 @@
                 uri="rtmp://<HOST_ADDRESS>/bigbluebutton"
                 dependsOn="UsersModule"
                 privateEnabled="true"
-                fontSize="12"
+                fontSize="10"
                 position="top-right"
                 baseTabIndex="701"
-                colorPickerIsVisible="false"
+                colorPickerIsVisible="true"
                 maxMessageLength="1024"
         />
 
@@ -63,8 +76,8 @@
                 skipCheck="false"
                 showButton="true"
                 enabledEchoCancel="true"
-                useWebRTCIfAvailable="true"
-                showPhoneOption="false"
+                useWebRTCIfAvailable="false"
+                showPhoneOption="true"
                 echoTestApp="9196"
                 dependsOn="UsersModule"
         />
@@ -75,7 +88,7 @@
                 baseTabIndex="401"
                 presenterShareOnly = "false"
                 controlsForPresenter = "false"
-                autoStart = "false"
+                autoStart = "true"
                 skipCamSettingsCheck="false"
                 showButton = "true"
                 showCloseButton = "true"
@@ -120,7 +133,7 @@
 
         <module name="LayoutModule" url="http://<HOST_ADDRESS>/client/LayoutModule.swf?v=VERSION"
                 uri="rtmp://<HOST_ADDRESS>/bigbluebutton"
-                layoutConfig="http://<HOST_ADDRESS>/client/conf/layout.xml"
+                layoutConfig="http://<HOST_ADDRESS>/client/conf/layout-webtv.org.xml"
                 enableEdit="false"
         />
 
