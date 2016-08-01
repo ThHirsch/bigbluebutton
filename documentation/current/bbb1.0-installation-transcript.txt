@@ -1,0 +1,72 @@
+For Installing bigbluebutton with html5 client follow the following steps	
+	
+1.Run apt-get update
+	#sudo apt-get update
+2.Make repo known to apt
+ 	#sudo echo "deb http://repo.company-group.com/bigbluebutton.org/1-0 jessie main" | tee /etc/apt/sources.list$
+3.Install gpg key
+	#sudo curl http://repo.company-group.com/bigbluebutton.org/1-0/gpg.key | sudo apt-key add -
+4.Run apt-get update 
+	#sudo apt-get update
+5.Install bbb1.0
+ 	#sudo apt-get install bigbluebutton
+6.Run dist-upgrade
+	#sudo apt-get dist-upgrade
+7.Install demo application to create meetings in various ways(ex. Html5 client, flash client with password & without password, with different roles, with dynamic config xml etc…).
+	#sudo apt-get install bbd-demo
+8.Install bbb-chek application to check weather all the components are up and running properly if not it will show errors and suggestions.
+ 	#sudo apt-get bbd-check
+9.To enable WebRTC audio
+	#sudo bbb-conf --enablewebrtc
+10.Run apt-get update
+	#sudo apt-get update
+11.Install bbb-html5
+	#sudo apt-get install bbb-html5
+12.Change the user of /usr/share/meteor to the current user. Earlier current user did not have permission of this folder so we were facing "SQLITE_CANTOPEN: unable to open database file" error while 	    executing start.sh.So this problem has been solved by following command.
+	#sudo chown -R $USER /usr/share/meteor 
+			
+13.Move to /usr/share/meteor/html5/app directory because you can not execute start.sh from any other directory so you first need to go to /usr/share/meteor/html5/app directory to execute it.
+	cd /usr/share/meteor/html5/app
+		
+14.Start meteor.Please not that never run following command as root user.Executing it with sudo breaks permissions.
+	#./start.sh
+
+15.Complete restart bigbluebutton	
+	#sudo bbb-conf --clean
+
+
+Additional Info for debugging problems
+- You can check all the components are working properly using following command
+	#sudo bbb-conf —-check
+- You can also check more some detailed info using following command
+	#sudo bbb-conf —-debug
+	
+
+- If you face any ip related problems, or your ip changes, Following commands will change ip in needed files
+	#sudo bbb-conf --setip <ip_address_or_hostname>
+	#sudo bbb-conf --enablewebrtc
+	#sudo bbb-conf --clean
+	#sudo bbb-conf --check
+	
+	Also verify that following file have correct ip configured
+		/var/www/bigbluebutton/client/conf/config.xml
+		/etc/bigbluebutton/nginx/sip.nginx
+		
+- Following are all log files where you can check if there are issues.
+	* Nginx
+		1)/var/log/nginx/bigbluebutton.access.log 
+		2)/var/log/nginx/error.log 
+	* Red5
+		1)/usr/share/red5/log/deskshare.log
+		2)/usr/share/red5/log/sip.log
+		3)/usr/share/red5/log/video.log
+		4) /usr/share/red5/log/bigbluebutton.log
+	* Tomcat7
+		1)catalina.yyyy-mm-dd.log	
+		2)localhost.yyyy-mm-dd.log	
+		3)/var/log/syslog	
+		4)/var/log/bigbluebutton	
+
+
+
+						
