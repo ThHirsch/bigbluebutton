@@ -1,0 +1,233 @@
+
+Steps to get conferencing-web up with bigbluebutton custom-client
+=================================================================
+
+1) Follow installation steps given at following location to install bbb1.0 on clean debian machine.
+
+	https://github.com/ThHirsch/bigbluebutton/blob/v1.0.x-release/documentation/current/bbb1.0-installation-transcript.txt
+
+2) Install elasticsearch
+
+	Follow follwing steps to install elasticsearch 1.7
+	 	Download and install the Public Signing Key:
+	 		wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+	 	Save the repository definition to /etc/apt/sources.list.d/elasticsearch-{branch}.list:
+	 		echo "deb http://packages.elastic.co/elasticsearch/1.7/debian stable main" | sudo tee -a /etc/apt/sources.list.d/elasticsearch-1.7.list
+	 	Run apt-get update and the repository is ready for use. You can install it with:
+	 		sudo apt-get update && sudo apt-get install elasticsearch
+		Configure Elasticsearch to automatically start during bootup. If your distribution is using SysV init, then you will need to run:
+			sudo /bin/systemctl daemon-reload
+			sudo /bin/systemctl enable elasticsearch.service
+
+		change clustername to conferencing-es from /etc/elasticsearch/elasticsearch.yml file
+
+		Start elasticsearch
+			sudo systemctl start elasticsearch
+
+
+	 Install head plugin if required
+	 	Go to /usr/share/elasticsearch/bin and execute followign commmand
+		./plugin --install mobz/elasticsearch-head
+
+3) Create mappings for users,conferences and joinlinks index. Just execute following commands in your terminal after elasticsearch is up and running.
+
+	curl -XPUT 'http://localhost:9200/users/' -d '{
+  "mappings": {
+    "User": {
+      "dynamic_templates": [
+        {
+          "strings": {
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "string",
+              "index": "not_analyzed",
+              "fields": {
+                "analyzed": {
+                  "type":  "string",
+                    "index":"analyzed"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}'
+
+curl -XPUT 'http://localhost:9200/conferences/' -d '{
+  "mappings": {
+    "Conference": {
+      "dynamic_templates": [
+        {
+          "strings": {
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "string",
+              "index": "not_analyzed",
+              "fields": {
+                "analyzed": {
+                  "type":  "string",
+                    "index":"analyzed"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}'
+curl -XPUT 'http://localhost:9200/joinlinks/' -d '{
+  "mappings": {
+    "JoinLinkMapping": {
+      "dynamic_templates": [
+        {
+          "strings": {
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "string",
+              "index": "not_analyzed",
+              "fields": {
+                "analyzed": {
+                  "type":  "string",
+                    "index":"analyzed"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}'
+
+
+4) Deploy conferencing-web component
+
+	You need to deploy war file in /var/lib/tomcat7/webapps/ directory
+
+   Now, each environment (LOCAL,DEV,QA,PROD) have its own configurations for elasticsearch,host,cluster-name,salt,protocol(http,https).
+   So these are placed in environment specific application-{{env}}.properties files.
+   Following are the properties file with specific environments
+        LOCAL - /var/lib/tomcat7/webapps/conferencing/WEB-INF/classes/application-local.properties
+        DEV - /var/lib/tomcat7/webapps/conferencing/WEB-INF/classes/application-dev.properties
+        QA - /var/lib/tomcat7/webapps/conferencing/WEB-INF/classes/application-qa.properties
+        PROD - /var/lib/tomcat7/webapps/conferencing/WEB-INF/classes/application-prod.properties
+
+   Set your default profile to prod by setting following property in /var/lib/tomcat7/webapps/conferencing/WEB-INF/classes/application.properties file. It will tell spring to take configurations from prod environment.
+   		spring.profiles.active = prod
+
+	Change configurations according to your environment in /var/lib/tomcat7/webapps/conferencing/WEB-INF/classes/application-prod.properties.
+
+
+	Create nginx configuration for conferencing-web by executing following command
+
+		echo '
+			location /conferencing {
+			       proxy_pass         http://127.0.0.1:8080;
+			       proxy_redirect     default;
+			       proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+
+
+			# Allow 30M uploaded presentation document.
+			       client_max_body_size       30m;
+			       client_body_buffer_size    128k;
+
+			       proxy_connect_timeout      90;
+			       proxy_send_timeout         90;
+			       proxy_read_timeout         90;
+
+			       proxy_buffer_size          4k;
+			       proxy_buffers              4 32k;
+			       proxy_busy_buffers_size    64k;
+			       proxy_temp_file_write_size 64k;
+
+			       include    fastcgi_params;
+			   }
+		' | sudo tee /etc/bigbluebutton/nginx/conferencing.nginx
+
+	Note : Use single quote with echo in above command, wrapping content with double quote skips $proxy_add_x_forwarded_for in the content of the file.
+
+
+	After executing above command, please check that nginx configurations are correct or not by applying following command. If configurations are ok, it will show successful
+
+		sudo /usr/sbin/nginx -t
+
+
+5) Other nginx - configurations
+
+	  Open /etc/nginx/sites-available/bigbluebutton file and change configurations as said below
+
+		 Add following lines above  "access_log  /var/log/nginx/bigbluebutton.access.log;" line
+
+			 #Following three configurations are about zap tool, to reduce the number of security errors
+			  add_header X-Frame-Options SAMEORIGIN;
+			  add_header X-Content-Type-Options nosniff;
+			  add_header X-XSS-Protection "1; mode=block";
+
+
+		Replace bigbluebutton landing page section with the following
+
+			# BigBlueButton landing page.
+	        location / {
+	#         rewrite "^$" "http://127.0.0.1:8080/conferencing2/#/join" [NE];
+	            proxy_pass_header       Set-Cookie;
+	            proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+	            proxy_cookie_path ~*^/.* /;
+				proxy_pass    http://127.0.0.1:8080/conferencing/;
+		        proxy_set_header X-Real-IP $remote_addr;
+	            proxy_redirect          default;
+
+	#          root   /var/www/bigbluebutton-default;
+	#         index  index.html index.htm;
+		  expires 1m;
+	        }
+
+
+
+6) Now, you can test default bigbluebutton client with conferencing-web app., Skip this step if you do not want to test with default client.
+
+   Just restart bigbluebutton server with following command
+   	sudo bbb-conf --clean
+
+   then hit your http://HOST, you will be able to access conferencing-web app.
+
+   Note: We have set conferencing-web default by nginx-configuration in /etc/nginx/sites-available/bigbluebutton
+   			proxy_pass    http://127.0.0.1:8080/conferencing/;
+
+
+
+6) To test conferencing-web with customized client,
+
+	Deploy bigbluebutton client  at /var/www/
+	(Extract given tar file at /var/www location)
+
+	Execute following command for creating configuration file for custom-client
+		echo "
+
+			location /client/BigBlueButton.html {
+				root /var/www/bbb-delvag-client;
+				index index.html index.htm;
+				expires 1m;
+				}
+
+				# BigBlueButton Flash client.
+				location /client {
+				root /var/www/bbb-delvag-client;
+				index index.html index.htm;
+				}
+" | sudo tee /etc/bigbluebutton/nginx/client_dev
+
+point to custom client
+
+sudo ln -s -f /etc/bigbluebutton/nginx/client_dev /etc/bigbluebutton/nginx/client.nginx
+
+
+7) Complete restart bigbluebutton
+
+	sudo bbb-conf --clean
+
+
+
+
