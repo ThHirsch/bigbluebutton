@@ -1,0 +1,260 @@
+Preface
+
+I already created debian repos before. These are located on cg-de001sv002 VM,
+which also will give direct access to the repositories from the internet because cg-de001sv002 is a webserver hosted at benelog
+
+As target VM I chose cg-bbb-con2 (10.10.111.152) cause that is the machine the repo will initially be created for.
+
+0. For the impatient:
+bbb-1.0 for debian is available now:
+a) make repo known to apt
+# echo "deb http://repo.company-group.com/bigbluebutton.org/1-0 jessie main" | sudo tee /etc/apt/sources.list.d/bigbluebutton.list
+
+b) install gpg key
+# curl http://repo.company-group.com/bigbluebutton.org/1-0/gpg.key | sudo apt-key add -
+
+c) run apt-get udpate
+# sudo apt-get update
+
+d) install bbb-1.0
+# sudo apt-get install bigbluebutton
+
+
+1. Mirror original bbb packages
+
+see https://www.howtoforge.com/local_debian_ubuntu_mirror
+
+For the latest repo I added
+deb http://ubuntu.bigbluebutton.org/trusty-1-0/ bigbluebutton-trusty main
+to /etc/apt/mirror.list
+
+after running
+# apt-mirror
+The complete bbb 1.0 repository can be found in
+/var/spool/apt-mirror/mirror/ubuntu.bigbluebutton.org/trusty-1-0
+
+2. Setup own debian repo
+
+see https://wiki.debian.org/SettingUpSignedAptRepositoryWithReprepro
+
+for populating the newly created repo site I copied the packages to an interim location
+# mkdir -p /root/bbb-1.0/packages
+# cd /var/spool/apt-mirror/mirror/ubuntu.bigbluebutton.org/trusty-1-0/pool/main
+# find ./ -type f -name '*.deb' -exec cp {} /root/bbb-1.0/packages/ \;
+
+3. Add bbb packages to repo
+
+for my new repo I used /srv/vhosts/repo.company-group.com/httpdocs/bigbluebutton.org/1-0 as base directory
+for running reprepro we need to
+# export REPREPRO_BASE_DIR=/srv/vhosts/repo.company-group.com/httpdocs/bigbluebutton.org/1-0
+
+now import the core bbb deb file to our repo:
+# cd /root/bbb-1.0/packages
+# for pkg in $(ls *.deb); do reprepro includedeb jessie $pkg; done
+
+4. Add latest libreoffice to our repo as well
+
+I opted for the latest version
+# mkdir -p /root/bbb-1.0/libreoffice
+# cd /root/bbb-1.0/libreoffice
+# wget http://download.documentfoundation.org/libreoffice/stable/5.0.6/deb/x86_64/LibreOffice_5.0.6_Linux_x86-64_deb.tar.gz
+# tar xzf LibreOffice_5.0.6_Linux_x86-64_deb.tar.gz
+# cd LibreOffice_5.0.6.3_Linux_x86-64_deb/DEBS
+
+now add them to the repo
+# for pkg in $(ls *.deb); do reprepro -P 10 -S libreoffice -C main includedeb jessie $pkg; done
+
+since we're at it we also add the german language packs
+# cd bbb-1.0/libreoffice/
+# wget "http://download.documentfoundation.org/libreoffice/stable/5.0.6/deb/x86_64/LibreOffice_5.0.6_Linux_x86-64_deb_langpack_de.tar.gz"
+# tar xzf LibreOffice_5.0.6_Linux_x86-64_deb_langpack_de.tar.gz
+# cd LibreOffice_5.0.6.3_Linux_x86-64_deb_langpack_de/DEBS
+# for pkg in $(ls *.deb); do reprepro -P 10 -S libreoffice -C main includedeb jessie $pkg; done
+
+5. ffmpeg and mencoder - strange dependendies in bbb
+bbb requires a really outdated version of ffmpeg
+they'd like to have version 2.3.3 while at the time I was writing this 3.1.1 is current stable
+I didn't want to recompile all ffmpeg stuffs by myself this helped me for getting ffmpeg 2.3.x binary build
+take a look - https://pkgs.org/search/ffmpeg
+It will now show ffmpeg_2.6.9-dmo1_amd64.deb but...
+Since I already prepared that some time ago I will just re-use my old binary pkgs and wait what will happen.
+ffmpeg_2.6.3-dmo1_amd64.deb
+libfdk-aac1_0.1.4-dmo1_amd64.deb
+libaacplus2_2.0.2-dmo2_amd64.deb
+libpostproc53_2.6.3-dmo1_amd64.deb
+libavcodec56_2.6.3-dmo1_amd64.deb
+libswresample1_2.6.3-dmo1_amd64.deb
+libavdevice56_2.6.3-dmo1_amd64.deb
+libswscale3_2.6.3-dmo1_amd64.deb
+libavfilter5_2.6.3-dmo1_amd64.deb
+libutvideo15_15.1.0-dmo2_amd64.deb
+libavformat56_2.6.3-dmo1_amd64.deb
+libvidstab1.0_0.98b-dmo1_amd64.deb
+libavresample2_2.6.3-dmo1_amd64.deb
+libx265-51_1.6-dmo1_amd64.deb
+libavutil54_2.6.3-dmo1_amd64.deb
+libbluray1_0.7.0-dmo1_amd64.deb
+libdca0_0.0.5-dmo2_amd64.deb
+libfaac0_1.28-dmo3_amd64.deb
+libmp3lame0_3.99.5-dmo4_amd64.deb
+librtmp1_2.4~20150315.gita107cef9b-dmo1_amd64.deb
+libx264-146_0.146.2538+git121396c-dmo1_amd64.deb
+libxvidcore4_1.3.3-dmo1_amd64.deb
+mencoder_1.1.1+20150226+svn37375-dmo4_amd64.deb
+
+6. add our repo
+I created the repo at
+deb http://repo.company-group.com/bigbluebutton.org/1-0 jessie main
+# echo "deb http://repo.company-group.com/bigbluebutton.org/1-0 jessie main" | sudo tee /etc/apt/sources.list.d/bigbluebutton.list
+install gpg key
+# curl http://repo.company-group.com/bigbluebutton.org/1-0/gpg.key | sudo apt-key add -
+run apt-get udpate
+# apt-get update
+
+
+7. Now the real fun stuff - test the repo and try to install bigbluebutton on debian
+
+# apt-get install bbb-swftools
+this will fail because libjpeg8 cannot be resolved.
+let's check if there's a new version or if we can reuse my old bbb-swftools package (had to compile this for debian jessie with proper deps)
+good thing md5sum is still the same - so they must be matching
+so we will remove it
+# reprepro remove jessie bbb-swftools 0.9.2-1ubuntu14
+and add previous (patched version) from our 091 repo
+# reprepro includedeb jessie /srv/vhosts/repo.company-group.com/httpdocs/bigbluebutton.org/091/pool/main/b/bbb-swftools/bbb-swftools_0.9.2-1ubuntu14_amd64.deb
+
+on target machine run
+# apt-get update
+# apt-get install bbb-swftools
+deps seem to be okay.
+I will hit n for the time being and check for other failing dependencies
+# apt-get install bigbluebutton
+failing because of bbb-config
+# apt-get install bbb-config
+failing because of
+bbb-apps-sip
+bbb-playback-presentation
+... chaining down deps..
+bbb-record-core : depends on: ruby1.9.1-dev
+let's check the md5sums again - maybe we can re-use something
+bbb-record-core_1.0.0-1ubuntu52_amd64.deb
+ok - it's a new 1.0.0 package so we will have to do something about this.
+we only have a working binary package for bbb-record-core_0.9.0-1ubuntu43_amd64.deb
+# cd /root/bbb-1.0/
+# mkdir tmp
+extract the package
+# dpkg-deb -x ../packages/bbb-record-core_1.0.0-1ubuntu52_amd64.deb ./extract
+# dpkg-deb -e ../packages/bbb-record-core_1.0.0-1ubuntu52_amd64.deb ./extract/DEBIAN
+take a look at the control file
+# vi extract/DEBIAN/control
+let's replace ruby1.9.1-dev with ruby-dev
+and rapackage
+# dpkg-deb -b extract bbb-record-core_1.0.0-1ubuntu52_amd64.deb
+remove and re-add new bbb-record-core package
+# reprepro remove jessie bbb-record-core
+# reprepro includedeb jessie ./bbb-record-core_1.0.0-1ubuntu52_amd64.deb
+let's try again
+on target machine run
+# apt-get update
+# apt-get install bbb-record-core
+looks like it is going to be installed - so we hit n again and check for further issues
+bbb-freeswitch : depends on: libssl1.0.2, which is not available on debian jessie
+let's find something that matches, now we might be fine with libssl1.0.0 which is available for jessie
+but there's libssl1.0.2 for sid (unstable debian distro part)
+let's check if other deps for libssl1.0.2 are met:
+https://pkgs.org/debian-sid/debian-main-amd64/libssl1.0.2_1.0.2h-1_amd64.deb.html
+on target machine run
+# apt-show-versions debconf
+1.5.56
+# apt-show-versions libc6
+2.19-18+deb8u4
+ok, that should be working out - lets add libssl1.0.2 to our repo
+# mkdir -p /root/bbb-1.0/deps
+# cd /root/bbb-1.0/deps
+# wget http://ftp.br.debian.org/debian/pool/main/o/openssl/libssl1.0.2_1.0.2h-1_amd64.deb
+# reprepro includedeb jessie ./libssl1.0.2_1.0.2h-1_amd64.deb
+... re-run package testing on target host
+bbb-freeswitch can now be installed
+good to see that bigbluebutton would also be completely installed
+let's take a snapshot of that VM and try out
+alright - bbb-record-core is failing to run setup, maybe that's because of the changes we made
+ruby and gem commands cannot be found. let's add ruby to deps in bbb-record-core
+our deb pkg extract is still there - so we can just
+# cd /root/bbb-1.0/tmp
+# vi extract/DEBIAN/control
+
+because i don't want to try too many times I checked for more issues
+gem install nokogiri -v '1.6.8' ist failing because of missing zlib.
+let's try to heal that by installing packages zlib
+# apt-get install liblz-dev zlib1g-dev liblzma-dev
+okay, that worked out. let's add these dependencies to bbb-record-core aswell
+# vi extract/DEBIAN/control
+# dpkg-deb -b extract bbb-record-core_1.0.0-1ubuntu52_amd64.deb
+# reprepro remove jessie bbb-record-core
+# reprepro includedeb jessie ./bbb-record-core_1.0.0-1ubuntu52_amd64.deb
+bbb-record-core should now be okay
+
+I expect some more issues, let's run
+# bbb-conf --check
+
+Issues found: an libreoffice version was pulled, ffmpeg missing
+let's first target missing ffmpeg - again something we need to add to bbb-record-core
+# vi extract/DEBIAN/control
+# dpkg-deb -b extract bbb-record-core_1.0.0-1ubuntu52_amd64.deb
+# reprepro remove jessie bbb-record-core
+# reprepro includedeb jessie ./bbb-record-core_1.0.0-1ubuntu52_amd64.deb
+
+That LibreOffice issue we will take care of later, if I remember correctly some adjustment in bbb-office have to be made
+But let's just rollback to previous snapshot and see how we are doing
+
+I want things right with libreoffice as well. Let's see what I did last time
+The control file of my previous installation shows
+Depends: monit, libreoffice4.4, libreoffice4.4-en-us,libreoffice4.4-calc, libreoffice4.4-draw,libreoffice4.4-impress,libreoffice4.4-math, libreoffice4.4-writer, libgl1-mesa-glx, libglu1-mesa, libdbus-glib-1-2, ttf-mscorefonts-installer | msttcorefonts | ttf-liberation, psmisc, fonts-crosextra-carlito, fonts-crosextra-caladea
+alright!
+let's change it to
+Depends: monit, libreoffice5.0, libreoffice5.0-en-us, libreoffice5.0-de, libreoffice5.0-calc, libreoffice5.0-draw, libreoffice5.0-impress, libreoffice5.0-math, libreoffice5.0-writer, ttf-mscorefonts-installer | msttcorefonts | ttf-liberation, psmisc, fonts-crosextra-carlito, fonts-crosextra-caladea
+I assume the init script should also be adjusted - we will see if that worked out later
+# vi extract/etc/init.d/bbb-office
+and change the paths to libreoffice install
+DAEMON=/opt/libreoffice5.0/program/soffice
+DAEMON_REAL=/opt//libreoffice5.0/program/oosplash
+# dpkg-deb -b extract bbb-office_0.9.0-1ubuntu6_amd64.deb
+# reprepro remove jessie bbb-office
+# reprepro includedeb jessie  ./bbb-office_0.9.0-1ubuntu6_amd64.deb
+
+let's try to install again on target machine
+
+still a missing dependency for bbb-office
+libdbus-glib-1-2
+so we will add this dep as well
+now it says
+Depends: monit, libreoffice5.0, libreoffice5.0-en-us, libreoffice5.0-de, libreoffice5.0-calc, libreoffice5.0-draw, libreoffice5.0-impress, libreoffice5.0-math, libreoffice5.0-writer, libdbus-glib-1-2, ttf-mscorefonts-installer | msttcorefonts | ttf-liberation, psmisc, fonts-crosextra-carlito, fonts-crosextra-caladea
+
+
+Ok, now bbb-apps-akka is still failing, because bbb chose to use Upstart - well let's get that fixed as well
+For this I created a systemd service descriptor and removed all Upstart crap from the package
+
+Now the last thing to do is make bbb-conf check compatible with our new setup
+# cd /root/bbb-1.0/tmp
+# rm -Rf extract
+# dpkg -x /srv/vhosts/repo.company-group.com/httpdocs/bigbluebutton.org/1-0/pool/main/b/bbb-config/bbb-config_1.0.0-1ubuntu89_all.deb extract
+# dpkg -e /srv/vhosts/repo.company-group.com/httpdocs/bigbluebutton.org/1-0/pool/main/b/bbb-config/bbb-config_1.0.0-1ubuntu89_all.deb extract/DEBIAN
+made required changes to bbb-conf for libreoffice5.0 and ffmpeg 2.6, so that it will accept our new setup without showing errors or warnings
+# dpkg -b extract bbb-config_1.0.0-1ubuntu89_all.deb
+# reprepro remove jessie bbb-config
+# reprepro includedeb jessie ./bbb-config_1.0.0-1ubuntu89_all.deb
+
+let's rollback the target machine to snapshot and try again
+
+# apt-get update
+# apt-get install bigbluebutton
+
+after testing we are still not done
+bbb-fsesl-akka must also use systemd instead of Upstart to run properly
+
+and testing once again...
+
+bbb-conf does not yet properly support changes from Upstart to systemd for bbb-fsesl-akka and bbb-apps-akka
+after fixing bbb-conf script -
+
+looking good so far - we have wait and see if bbb 1.0 is running nicely on debian now
