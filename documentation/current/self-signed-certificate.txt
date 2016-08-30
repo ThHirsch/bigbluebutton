@@ -1,0 +1,57 @@
+To generate self signed certificate.
+
+Bigbluebutton needs SAN(Subject Alternate Name) in generated certificate.If SAN is not present, argues Subject Alternate Name is not present and
+meeting does not start. It just throws null pointer exception.
+
+By default generated certificate does not include SAN. So to include SAN in generated certificate do the following process.
+
+1) Add addictional field (SAN) that in /etc/ssl/openssl.cnf
+
+	- Find v_req line in /etc/ssl/openssl.cnf and uncomment that line.
+	- Again find [ v_req ] section and add the following
+
+			subjectAltName = @alt_names
+
+			[ alt_names ]
+			 IP.1 = 192.168.0.206
+			 # If you are using DNS instead of IP use DNS.1=<YOUR DNS>. You can configure multiple IP or DNS
+
+
+2) Generate certificate by executing following command
+	sudo openssl req -x509 -new -extensions v3_req -keyout cakey.key \-out cacert.crt -days 365
+
+    Above command will generate two files, cakey.key and cacert.crt.
+
+    You can view generated certificate using following command
+		openssl x509 -text -noout -in cacert.crt
+
+3) By default .key file has passphrase, But to configure with nginx we need to remove tht pass phrase otherwise everytime nginx starts, it will ask for passphrase.
+	We can do that by executing following command.
+
+	sudo openssl rsa -in cakey.key -out cakey1.key
+
+
+Now we can use cakey1.key and cacert.crt files to configure in nginx. Follow http://docs.bigbluebutton.org/install/install.html#configuring-https-on-bigbluebutton to configure these files in nginx.
+
+
+4) Now, you need to install certificates to trusted store.. Follow following procedure to add generated certificate to trusted store
+
+	mkdir InstallCert
+	cd InstallCert
+    wget http://opentox.ntua.gr/files/InstallCert.zip
+    unzip InstallCert
+
+	java InstallCert <Your IP>:443
+
+ 	When you are asked to make any choice or to add certificate just hit enter. Your certificates will be added to jssecacerts keystore.
+ 	jssecacerts file will be created in your current directory.
+
+ 5) Now configure your program to use this trusted store by just replacing /etc/ssl/certs/java/cacerts with jssecacerts(which generated in previous step)
+
+
+
+You can use following documentations for reference or any other help.
+
+https://www.prshanmu.com/2009/03/generating-ssl-certificates-with-x509v3-extensions.html
+
+http://www.westphahl.net/blog/2012/01/03/setting-up-https-with-nginx-and-startssl/

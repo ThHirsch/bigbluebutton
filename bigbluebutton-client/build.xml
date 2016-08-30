@@ -615,8 +615,29 @@
 
     </target>
 
+    <target name="dist-http" depends="init-ant-contrib">
 
-    <target name="dist" depends="init-ant-contrib">
+        <mkdir dir="${TEMP_OUTPUT}"></mkdir>
+        <mkdir dir="${TEMP_OUTPUT}/bbb-delvag-client"></mkdir>
+        <mkdir dir="${TEMP_OUTPUT}/bbb-delvag-client/client"></mkdir>
+
+        <copy todir="${TEMP_OUTPUT}/bbb-delvag-client/client">
+            <fileset dir="${BASE_DIR}/client"/>
+        </copy>
+
+        <delete file="${TEMP_OUTPUT}/bbb-delvag-client/client/conf/config.xml"></delete>
+        <copy file="${BASE_DIR}/resources/https-chages/config.xml" todir="${TEMP_OUTPUT}/bbb-delvag-client/client/conf/"></copy>
+
+        <echo message="TEMP OUTPUT value is : ${TEMP_OUTPUT}"></echo>
+        <var name="OUTPUT_DIR" value="${TEMP_OUTPUT}/bbb-delvag-client/client"/>
+
+
+        <antcall target="set-version"/>
+        <antcall target="compress-client"/>
+        <antcall target="remove-temp"></antcall>
+    </target>
+
+    <target name="dist-https" depends="init-ant-contrib">
 
         <mkdir dir="${TEMP_OUTPUT}"></mkdir>
         <mkdir dir="${TEMP_OUTPUT}/bbb-delvag-client"></mkdir>

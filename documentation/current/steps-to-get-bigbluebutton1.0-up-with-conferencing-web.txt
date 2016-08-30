@@ -154,6 +154,9 @@ curl -XPUT 'http://localhost:9200/joinlinks/' -d '{
 
 		sudo /usr/sbin/nginx -t
 
+	Now, restart nginx to take above configuration into effect
+		sudo systemctl restart nginx
+
 
 5) Other nginx - configurations
 
@@ -223,10 +226,23 @@ point to custom client
 
 sudo ln -s -f /etc/bigbluebutton/nginx/client_dev /etc/bigbluebutton/nginx/client.nginx
 
+Restart nginx to take above configuration into effect.
+sudo systemctl restart nginx
+
 
 7) Complete restart bigbluebutton
 
 	sudo bbb-conf --clean
+
+
+
+
+To Configure https in bigbluebutton.
+    Follow steps given at following location to configure bigbluebutton with https.
+              http://docs.bigbluebutton.org/install/install.html#configuring-https-on-bigbluebutton.
+
+    If you are going to use self-signed certificate, You should first generate certificate then follow steps given at above url.
+    To generate self-signed certificate, Follow steps given in self-signed-certificate.txt(which is in the same directory) file.
 
 
 
