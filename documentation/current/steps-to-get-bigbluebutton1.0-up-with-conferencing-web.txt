@@ -19,10 +19,11 @@ Steps to get conferencing-web up with bigbluebutton custom-client
 			sudo /bin/systemctl daemon-reload
 			sudo /bin/systemctl enable elasticsearch.service
 
-		change clustername to conferencing-es from /etc/elasticsearch/elasticsearch.yml file
+		change clustername to conferencing-es in /etc/elasticsearch/elasticsearch.yml file by executing following command
+		    sed -i 's/^#cluster.name.*/cluster.name : conferencing-es/' /etc/elasticsearch/elasticsearch.yml
 
 		Start elasticsearch
-			sudo systemctl start elasticsearch
+			sudo systemctl restart elasticsearch
 
 
 	 Install head plugin if required
@@ -243,6 +244,10 @@ To Configure https in bigbluebutton.
 
     If you are going to use self-signed certificate, You should first generate certificate then follow steps given at above url.
     To generate self-signed certificate, Follow steps given in self-signed-certificate.txt(which is in the same directory) file.
+
+    To Serve the bbb-html5 client over HTTPS, follow steps given at following location
+        http://docs.bigbluebutton.org/html/html5-dev.html#serve-the-client-over-https
+
 
 
 

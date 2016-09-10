@@ -594,7 +594,7 @@
             <else>
                 <echo message="Creating bbb-delvag-client.tar file in ${BASE_DIR}/dist directory"></echo>
                 <mkdir dir="${BASE_DIR}/dist"></mkdir>
-                <tar destfile="${BASE_DIR}/dist/bbb-delvag-client.tar" basedir="${TEMP_OUTPUT}/"/>
+                <tar destfile="/bigbluebutton/bigbluebutton-client/dist/bbb-delvag-client-HTTPS.tar" basedir="${TEMP_OUTPUT}/"/>
             </else>
         </if>
 
@@ -626,7 +626,7 @@
         </copy>
 
         <delete file="${TEMP_OUTPUT}/bbb-delvag-client/client/conf/config.xml"></delete>
-        <copy file="${BASE_DIR}/resources/https-chages/config.xml" todir="${TEMP_OUTPUT}/bbb-delvag-client/client/conf/"></copy>
+        <copy file="${PROD_RESOURCES_DIR}/conf/config.xml" todir="${TEMP_OUTPUT}/bbb-delvag-client/client/conf/"></copy>
 
         <echo message="TEMP OUTPUT value is : ${TEMP_OUTPUT}"></echo>
         <var name="OUTPUT_DIR" value="${TEMP_OUTPUT}/bbb-delvag-client/client"/>
