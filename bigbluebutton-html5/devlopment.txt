@@ -1,3 +1,5 @@
+Following steps are for devlopment environment setup.
+
 sudo apt-get install curl
 curl https://install.meteor.com/ | sh
 sudo apt-get install npm
