@@ -31,19 +31,24 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
                     init-method="start" destroy-method="stop">
       <property name="host" value="${redisHost}" />
       <property name="port" value="${redisPort}" />
+      <property name="pass" value="${redisPass}"/>
     </bean>
     	
     <bean id="messageSender" class="org.bigbluebutton.api.messaging.MessageSender" 
                     init-method="start" destroy-method="stop">
       <property name="host" value="${redisHost}" />
       <property name="port" value="${redisPort}" />
-  	</bean>
+        <property name="pass" value="${redisPass}"/>
+
+
+    </bean>
 
     <bean id="redisMessageReceiver" class="org.bigbluebutton.api.messaging.MessageReceiver" 
                     init-method="start" destroy-method="stop">
-       <property name="host" value="${redisHost}" />
-       <property name="port" value="${redisPort}" />
-    	<property name="messageHandler"> <ref local="redisMessageHandler"/> </property>
+        <property name="host" value="${redisHost}" />
+        <property name="port" value="${redisPort}" />
+        <property name="pass" value="${redisPass}"/>
+        <property name="messageHandler"> <ref local="redisMessageHandler"/> </property>
   	</bean>
 
     <bean id="redisMessageHandler" class="org.bigbluebutton.api.messaging.ReceivedMessageHandler" 

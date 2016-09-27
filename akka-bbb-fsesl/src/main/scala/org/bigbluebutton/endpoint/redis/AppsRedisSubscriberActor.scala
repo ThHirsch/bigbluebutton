@@ -24,13 +24,13 @@ object AppsRedisSubscriberActor extends SystemConfiguration {
   def props(system: ActorSystem, msgReceiver: RedisMessageReceiver): Props =
     Props(classOf[AppsRedisSubscriberActor], system, msgReceiver,
       redisHost, redisPort,
-      channels, patterns).withDispatcher("akka.rediscala-subscriber-worker-dispatcher")
+      channels, patterns, Option(redisPassword)).withDispatcher("akka.rediscala-subscriber-worker-dispatcher")
 }
 
 class AppsRedisSubscriberActor(val system: ActorSystem, msgReceiver: RedisMessageReceiver, redisHost: String,
-  redisPort: Int, channels: Seq[String] = Nil, patterns: Seq[String] = Nil)
+  redisPort: Int, channels: Seq[String] = Nil, patterns: Seq[String] = Nil, password: Option[String] = None)
     extends RedisSubscriberActor(new InetSocketAddress(redisHost, redisPort),
-      channels, patterns) {
+      channels, patterns, password) {
 
   val decoder = new FromJsonDecoder()
 

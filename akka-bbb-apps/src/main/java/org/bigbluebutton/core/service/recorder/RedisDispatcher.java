@@ -46,7 +46,7 @@ public class RedisDispatcher implements Recorder {
 		
 		// Set the name of this client to be able to distinguish when doing
 		// CLIENT LIST on redis-cli
-		redisPool = new JedisPool(config, host, port, Protocol.DEFAULT_TIMEOUT, null,
+		redisPool = new JedisPool(config, host, port, Protocol.DEFAULT_TIMEOUT, password,
 		        Protocol.DEFAULT_DATABASE, "BbbAppsAkkaRec");
 	}
 		

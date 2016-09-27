@@ -1,0 +1,12 @@
+Package the project using following
+# sbt compile dist package
+
+Remove existing deployment
+# sudo rm -r /usr/share/bbb-fsesl-akka/
+
+Extract it
+# unzip target/universal/bbb-fsesl-akka-0.0.1.zip -d target/universal/
+
+Deploy it
+#﻿sudo cp -r target/universal/bbb-fsesl-akka-0.0.1 /usr/share/bbb-fsesl-akka
+

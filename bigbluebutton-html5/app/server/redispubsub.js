@@ -38,6 +38,8 @@ Meteor.RedisPubSub = (function() {
       Meteor.log.info("constructor RedisPubSub");
       this.pubClient = redis.createClient();
       this.subClient = redis.createClient();
+      this.pubClient.auth(Meteor.config.redis.password);
+      this.subClient.auth(Meteor.config.redis.password);
       Meteor.log.info(`Subscribing message on channel: ${Meteor.config.redis.channels.fromBBBApps}`);
       this.subClient.on("psubscribe", Meteor.bindEnvironment(this._onSubscribe));
       this.subClient.on("pmessage", Meteor.bindEnvironment(this._addToQueue));

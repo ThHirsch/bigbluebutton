@@ -1,0 +1,51 @@
+sudo apt-get install curl
+curl https://install.meteor.com/ | sh
+sudo apt-get install npm
+
+sudo sed -i -e 's/svgImagesRequired=.*/svgImagesRequired=true/g' /var/lib/tomcat7/webapps/bigbluebutton/WEB-INF/classes/bigbluebutton.properties
+
+sudo service tomcat7 restart
+
+echo 'location /html5client {
+      proxy_pass http://127.0.0.1:3000;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "Upgrade";
+    }
+
+    location /_timesync {
+      proxy_pass http://127.0.0.1:3000;
+    }' | sudo tee /etc/bigbluebutton/nginx/html5.nginx
+
+sudo /etc/init.d/nginx reload
+
+sudo nginx -t
+
+Solved npm install in shared directory problem solved (Issuing command npm install on shared directory raises problems in dev environment. Inside mounted directory it is not able to create symlinks.)
+===================================================
+sudo cp -r /media/sf_bbb1.0 ~/
+sudo chown -R bbb:bbb ~/sf_bbb1.0/
+cd ~/sf_bbb1.0/bigbluebutton/bigbluebutton-html5/
+npm install
+sudo mount --bind ~/shared_bbb/bigbluebutton/bigbluebutton-html5/node_modules ~/sf_bbb1.0/bigbluebutton/bigbluebutton-html5/node_modules
+
+Mongo db not starting problem solved (Meteor try to search Mongodb in the same machine where code is running. As we have mounted the code it can not find mongo so it raise error)
+=================================
+sudo mount --bind ~/sf_bbb1.0/bigbluebutton/bigbluebutton-html5/app/.meteor ~/shared_bbb/bigbluebutton/bigbluebutton-html5/app/.meteor
+
+
+Note : Do not execute ./start.sh with sudo. It will break all permissions
+
+
+For Deployment in local
+=======================
+Change Meteor home in start.sh
+sudo rm -r /usr/share/meteor/html5
+cd ~/shared_bbb/bigbluebutton/
+sudo rm bigbluebutton-html5.tar
+sudo tar -cvf bigbluebutton-html5.tar bigbluebutton-html5
+sudo tar -xvf ~/shared_bbb/bigbluebutton/bigbluebutton-html5.tar -C /usr/share/meteor/
+sudo mv /usr/share/meteor/bigbluebutton-html5 /usr/share/meteor/html5
+sudo chown -R meteor:meteor /usr/share/meteor/html5
+
+

@@ -23,6 +23,7 @@ public class MessageReceiver {
 
 	private String host;
 	private int port;
+	private String pass;
 	
 	public void stop() {
 		receiveMessage = false;
@@ -32,10 +33,19 @@ public class MessageReceiver {
 		log.info("Ready to receive messages from Redis pubsub.");
 		try {
 			receiveMessage = true;
+			log.info("Before jedis creation");
 			jedis = new Jedis(host, port);
+			log.info("After jedis creation");
 			// Set the name of this client to be able to distinguish when doing
 			// CLIENT LIST on redis-cli
+			log.info("Password is :");
+			log.info(pass);
+			jedis.auth(pass);
+			log.info("jedis object is :"+jedis);
 			jedis.clientSetname("BbbRed5AppsSub");
+
+
+
 			
 			Runnable messageReceiver = new Runnable() {
 			    public void run() {
@@ -64,6 +74,10 @@ public class MessageReceiver {
 	public void setPort(int port) {
 		this.port = port;
 	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
 	
 	public void setMessageHandler(ReceivedMessageHandler handler) {
 		this.handler = handler;
@@ -77,11 +91,13 @@ public class MessageReceiver {
 
 		@Override
 		public void onMessage(String channel, String message) {
+			log.debug("Not used onMessage():::::::::");
 			// Not used.
 		}
 
 		@Override
 		public void onPMessage(String pattern, String channel, String message) {
+			log.debug("onMessage():::::::::");
 			handler.handleMessage(pattern, channel, message);			
 		}
 

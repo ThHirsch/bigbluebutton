@@ -19,15 +19,15 @@ object AppsRedisSubscriberActor extends SystemConfiguration {
   def props(msgReceiver: RedisMessageReceiver): Props =
     Props(classOf[AppsRedisSubscriberActor], msgReceiver,
       redisHost, redisPort,
-      channels, patterns).withDispatcher("akka.rediscala-subscriber-worker-dispatcher")
+      channels, patterns, Option(redisPassword)).withDispatcher("akka.rediscala-subscriber-worker-dispatcher")
 }
 
 class AppsRedisSubscriberActor(msgReceiver: RedisMessageReceiver, redisHost: String,
   redisPort: Int,
-  channels: Seq[String] = Nil, patterns: Seq[String] = Nil)
+  channels: Seq[String] = Nil, patterns: Seq[String] = Nil, password: Option[String] = None)
     extends RedisSubscriberActor(
       new InetSocketAddress(redisHost, redisPort),
-      channels, patterns) {
+      channels, patterns, password) {
 
   // Set the name of this client to be able to distinguish when doing
   // CLIENT LIST on redis-cli

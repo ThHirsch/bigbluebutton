@@ -23,6 +23,7 @@ public class MessageSender {
 	
 	private String host;
 	private int port;
+	private String pass;
 	
 	public void stop() {
 		sendMessage = false;
@@ -44,7 +45,8 @@ public class MessageSender {
 		
 		// Set the name of this client to be able to distinguish when doing
 		// CLIENT LIST on redis-cli
-		redisPool = new JedisPool(config, host, port, Protocol.DEFAULT_TIMEOUT, null,
+		log.debug("password is in sender : {}",pass);
+		redisPool = new JedisPool(config, host, port, Protocol.DEFAULT_TIMEOUT, pass,
 		        Protocol.DEFAULT_DATABASE, "BbbWebPub");
 		
 		log.info("Redis message publisher starting!");
@@ -101,4 +103,5 @@ public class MessageSender {
 	public void setPort(int port) {
 		this.port = port;
 	}
+	public void setPass(String pass){this.pass = pass;}
 }

@@ -29,6 +29,7 @@ class BigBlueButtonFilters {
   	}
   	serviceUnavailable(controller:'api',action:'(create|join|isMeetingRunning|end|getMeetingInfo|getMeetings|enter|signOut)') {
   		before = {
+			log.debug("Filter applied...")
   			if (keepAliveService.isDown()) {
   				response.sendError(503, "BigBlueButton")
 					return false

@@ -55,6 +55,8 @@ config.redis.host = "127.0.0.1";
 
 config.redis.post = "6379";
 
+config.redis.password = "MyVerySecurePasswordPleaseChangeMe"
+
 config.redis.timeout = 5000;
 
 config.redis.channels = {};

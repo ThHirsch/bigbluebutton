@@ -1,11 +1,11 @@
 
 Regarding various levels of  encryption/hashing we/BBB use.  
-a) What Algorithmus is used for encryption, when  BBB uses it’s configured SALT parameter.
-	Bigbluebutton use SHA-1 Algoritham for securing its api. Everytime we make call from conferencing web to BBB server, we calculate SHA-1 Hash for <apiname>+<querystring>+<salt> String and pass the checksum along with the call.
+a) What Algorithms is used for encryption, when  BBB uses it’s configured SALT parameter.
+	BigBlueButton use SHA-1 Algoritham for securing its api. Everytime we make call from conferencing web to BBB server, we calculate SHA-1 Hash for <apiname>+<querystring>+<salt> String and pass the checksum along with the call.
 	The checksum is verfied with content by BBB server.
 
-b) What Algorithmus do we use, when crypting/decrypting the parameters we use in URL
-c) What Algorithmus do we use dot calculate  shortened URL  (to retrieve crytped URL parameters from Elastic) 
+b) What Algorithms do we use, when crypting/decrypting the parameters we use in URL
+c) What Algorithms do we use dot calculate  shortened URL  (to retrieve crytped URL parameters from Elastic) 
  	
  	For both of above b and c,
 
@@ -13,14 +13,14 @@ c) What Algorithmus do we use dot calculate  shortened URL  (to retrieve crytped
  		
  		For generating join link for each role, we generate short hash using HMAC-SHA-1 algorithm which generates non-reversible hash also its time based one time password(TOTP) so its not going to generate again ever. Then we store this generated hash along with meeting related data in ES. 
 
- 		So ES have all join link info with Role and unique hash. This hash is appended to link as Bellow. 
+ 		So ES have all join link info with Role and unique hash. This hash is appended to link as bellow.
 
 	 		 https://bbb.company-group.net/#/join/S11PsGsM
-	 		 here, S11PsGsM is a generated none repeatable hash. Here parameters are not visible so it can be shared.
+	 		 here, S11PsGsM is a generated non-repeatable hash. Here parameters are not visible so it can be shared.
 
-	 	When that shared link is hit in browser, BBB-Conferencing server will extract hash from the request and get releted data for that hash from ES. Then it(conferencing server) will use those data(got from ES for hash came in request) to call BBB-server along with checksum explained in (a). 
+	 	When that shared link is hit in browser, BBB-Conferencing server will extract hash from the request and get related data for that hash from ES. Then it(conferencing server) will use those data(got from ES for hash came in request) to call BBB-server along with checksum explained in (a).
 
-d) DO we store the parametes encrypted in elastic?!
+d) DO we store the parameters encrypted in elastic?!
 	 	No, params are not encrypted in ES, Only hash is generated with TOTP(HMAC-SHA-1 algorithm)
 
 

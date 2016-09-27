@@ -18,7 +18,9 @@ public class RedisStorageService {
 	private JedisPool redisPool;
 	private String host;
 	private int port;
-	
+	private String pass;
+
+
 	public void stop() {
 
 	}
@@ -26,7 +28,7 @@ public class RedisStorageService {
 	public void start() {
 		// Set the name of this client to be able to distinguish when doing
 		// CLIENT LIST on redis-cli
-		redisPool = new JedisPool(new GenericObjectPoolConfig(), host, port, Protocol.DEFAULT_TIMEOUT, null,
+		redisPool = new JedisPool(new GenericObjectPoolConfig(), host, port, Protocol.DEFAULT_TIMEOUT, pass,
 		        Protocol.DEFAULT_DATABASE, "BbbRed5AppsPub");
 					
 	}
@@ -123,4 +125,8 @@ public class RedisStorageService {
 	public void setPort(int port) {
 		this.port = port;
 	}
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+
 }

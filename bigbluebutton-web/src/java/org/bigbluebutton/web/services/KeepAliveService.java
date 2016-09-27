@@ -64,12 +64,14 @@ public class KeepAliveService implements MessageListener {
 	
 	private final String SYSTEM = "BbbWeb";
 	
-	public void start() {	
+	public void start() {
+		log.debug("Inside start ::::::::::::::::::::::::::::::::::::::");
 		scheduledThreadPool.scheduleWithFixedDelay(task, 5000, runEvery, TimeUnit.MILLISECONDS);
 		processKeepAliveMessage();
 	}
 	
 	public void stop() {
+		log.debug("Inside stop ::::::::::::::::::::::::::::::::::::::::");
 		processMessages = false;
 		scheduledThreadPool.shutdownNow();
 	}
@@ -98,6 +100,7 @@ public class KeepAliveService implements MessageListener {
   }
     
   private void processKeepAliveMessage() {
+  	log.debug("Inside processKeepAliveMessage :::::::::::::::::::::::::::::::::");
   	processMessages = true;
   	Runnable sender = new Runnable() {
   		public void run() {
@@ -119,6 +122,7 @@ public class KeepAliveService implements MessageListener {
   } 
   	
   private void processMessage(final KeepAliveMessage msg) {
+  	log.debug("ProcessMessage ::::::::::::::::::::::::::::::::::::::::::::");
   	Runnable task = new Runnable() {
   		public void run() {
 	  	  	if (msg instanceof KeepAlivePing) {
@@ -133,6 +137,7 @@ public class KeepAliveService implements MessageListener {
   }
   	
   private void processPing(KeepAlivePing msg) {
+  	log.debug("Process Ping ::::::::::::::::::::::::");
 	  service.sendKeepAlive(SYSTEM, System.currentTimeMillis());
 	  
 	  if (lastKeepAliveMessage != 0 && (System.currentTimeMillis() - lastKeepAliveMessage > 30000)) {
@@ -143,6 +148,7 @@ public class KeepAliveService implements MessageListener {
   }
   	
   private void processPong(KeepAlivePong msg) {
+  	log.debug("Process pong :::::::::::::::::::::::");
 	  if (lastKeepAliveMessage != 0 && !available) {
 		  log.error("BBB Web pubsub recovered!");
 	  }
@@ -152,6 +158,7 @@ public class KeepAliveService implements MessageListener {
   }
   
   private void handleKeepAliveReply(String system, Long timestamp) {
+  	log.debug("handleKeepAliveReply ::::::::::");
 	  if (system.equals("BbbWeb")) {
 		   	KeepAlivePong pong = new KeepAlivePong(system, timestamp);
 		   	queueMessage(pong);		  
@@ -161,6 +168,7 @@ public class KeepAliveService implements MessageListener {
   
 	@Override
   public void handle(IMessage message) {
+		log.debug("Inside handle :::::::::::::::::");
 		if (message instanceof KeepAliveReply) {
 			KeepAliveReply msg = (KeepAliveReply) message;
 			handleKeepAliveReply(msg.system, msg.timestamp);

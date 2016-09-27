@@ -12,7 +12,7 @@ import org.bigbluebutton.common.converters.ToJsonEncoder
 
 class RedisPublisher(val system: ActorSystem) extends SystemConfiguration {
 
-  val redis = RedisClient(redisHost, redisPort)(system)
+  val redis = RedisClient(redisHost, redisPort, Option(redisPassword))(system)
 
   // Set the name of this client to be able to distinguish when doing
   // CLIENT LIST on redis-cli

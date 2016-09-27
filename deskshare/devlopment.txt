@@ -1,0 +1,40 @@
+I have solved this using java 6 and plugin.jar of oracle java7. Performed following steps.
+But I think there must be some better way to solve this so let me if anyone can find. Please follow following steps.
+
+Note : Java installation steps given bellow is for debian machine, For Ubantu it may be different.
+
+Install java6 applying following commands(For Debian)
+
+    echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | sudo tee -a /etc/apt/sources.list
+    echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | sudo tee -a /etc/apt/sources.list
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
+    sudo apt-get update
+    sudo apt-get install oracle-java6-installer
+
+There is a open(when this applet was compiled) issue of deskshare build failure https://github.com/bigbluebutton/bigbluebutton/issues/3164
+
+Once java 6 is installed you have to set java 6 as default so gradle can use it.
+    		export JAVA_HOME=/usr/lib/jvm/java-6-oracle
+Now check that gradle is using java 6
+            gradle -version
+
+Now install oracle-java7 using following command
+sudo apt-get install oracle-java7-installer
+
+Copy plugin.jar in orcale java 6 jre directory, if ext folder does not exist in java 6, create it
+sudo cp /usr/lib/jvm/java-7-oracle/jre/lib/plugin.jar /usr/lib/jvm/java-6-oracle/jre/lib/ext/
+
+change the permission of plugin.jar in /usr/lib/jvm/java-6-oracle/jre/lib/ext/
+
+ sudo chown bbb:bbb /usr/lib/jvm/java-6-oracle/jre/lib/ext/plugin.jar
+
+
+
+ After building applet jar successfully change again to java7
+ 		sudo update-alternatives --config java
+
+
+
+
+
+

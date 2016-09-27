@@ -1,0 +1,124 @@
+Configure password on redis server
+	Set requirepass property with your password in /etc/redis/redis.conf file.
+
+Restart redis-server
+	#sudo service redis-server restart
+
+Deploy artficats
+=================
+
+	akka-bbb-apps
+		Take from : /var/www/delvag-deployments/20160927-redis-hardening/artifacts/bbb-apps-akka-0.0.2.zip
+
+		- Unzip this artifact and rename to bbb-apps-akka.
+		- Copy this renamed bbb-apps-akka to /usr/share/
+
+		Assign permission to user/share/bbb-apps-akka. Execute below command as it is.
+			# ﻿sudo chown -R bigbluebutton:bigbluebutton /usr/share/bbb-apps-akka/
+
+
+	akka-bbb-fsesl
+		Take from : /var/www/delvag-deployments/20160927-redis-hardening/artifacts/bbb-fsesl-akka-0.0.1.zip
+
+		- Unzip this artifact and rename to bbb-fsesl-akka.
+		- Copy this renamed bbb-fsesl-akka to /usr/share/
+
+		Assign permission to user/share/bbb-fsesl-akka. Execute below command as it is.
+			# ﻿sudo chown -R bigbluebutton:bigbluebutton /usr/share/bbb-fsesl-akka/
+
+	bbb-voice
+		Take from : /var/www/delvag-deployments/20160927-redis-hardening/artifacts/red5/sip.war
+		Copy to :  /usr/share/red5/webapps/
+
+		After deployment, please make sure that following two properties are correctly set in /usr/share/red5/webapps/sip/WEB-INF/bigbluebutton-sip.properties
+			bbb.sip.app.ip=<YOUR_IP>
+			freeswitch.ip=<YOUR_IP>
+	deskshare
+		Take from : /var/www/delvag-deployments/20160927-redis-hardening/artifacts/red5/deskshare.war
+		Copy to :  /usr/share/red5/webapps/
+
+	bigbluebutton-apps
+		Take from : /var/www/delvag-deployments/20160927-redis-hardening/artifacts/red5/bigbluebutton.war
+		Copy to :  /usr/share/red5/webapps/
+
+	bigbluebutton-web
+		Take from : /var/www/delvag-deployments/20160927-redis-hardening/artifacts/tomcat/bigbluebutton.war
+		Copy to :/var/lib/tomcat7/webapps/
+
+	    You will need to correct bigbluebutton.web.serverURL and securitySalt property in /var/lib/tomcat7/webapps/bigbluebutton/WEB-INF/classes/bigbluebutton.properties.
+
+    bigbluebutton-html5
+    	Take from : /var/www/delvag-deployments/20160927-redis-hardening/artifacts/bigbluebutton-html.tar
+
+        Extract bigbluebutton-html.tar artifact to /usr/share/meteor/
+            #sudo tar -xvf bigbluebutton-html5.tar -C /usr/share/meteor/
+
+        Remove old html5 component
+            #sudo rm -r /usr/share/meteor/html5
+
+        Rename /usr/share/meteor/bigbluebutton-html5 to  /usr/share/meteor/html5
+            #sudo mv /usr/share/meteor/bigbluebutton-html5 /usr/share/meteor/html5
+
+        Assign permissions to /usr/share/meteor/html5
+            #sudo chown -R meteor:meteor /usr/share/meteor/html5
+
+    After deploying all above components restart bellow mentioned services
+        Red5 Service
+            # sudo service bbb-red5 restart
+        Tomcat Service
+            # sudo service tomcat7 restart
+        Html5 Service
+            # sudo service bbb-html5 restart
+
+
+Change configurations
+=====================
+	akka-bbb-apps
+		Find following and change password in /usr/share/bbb-apps-akka/conf/application.conf file.
+			redis {
+				    host="127.0.0.1"
+				    port=6379
+				    password="MyVerySecurePasswordPleaseChangeMe"
+				    # recording keys should expire in 14 days
+				    keyExpiry=1209600
+				}
+
+
+	akka-bbb-fsesl
+		Find following and change password in /usr/share/bbb-fsesl-akka/conf/application.conf file.
+
+			redis {
+				    host="127.0.0.1"
+				    port=6379
+				    password="MyVerySecurePasswordPleaseChangeMe"
+				}
+
+	bbb-voice
+		Find redis.pass property in /usr/share/red5/webapps/sip/WEB-INF/bigbluebutton-sip.properties file and set password.
+			redis.pass=MyVerySecurePasswordPleaseChangeMe
+
+	deskshare
+		Find redis.pass property in /usr/share/red5/webapps/deskshare/WEB-INF/deskshare.properties file and set password.
+			redis.pass=MyVerySecurePasswordPleaseChangeMe
+
+
+	bigbluebutton-apps
+		Find redis.pass property in /usr/share/red5/webapps/bigbluebutton/WEB-INF/bigbluebutton.properties file and set password
+			redis.pass=MyVerySecurePasswordPleaseChangeMe
+
+		Find redis.pass property in /usr/share/red5/webapps/bigbluebutton/WEB-INF/classes/redis.properties file and set password
+			redis.pass=MyVerySecurePasswordPleaseChangeMe
+
+
+	bigbluebutton-web
+		Find redisPass property in /var/lib/tomcat7/webapps/bigbluebutton/WEB-INF/classes/bigbluebutton.properties file and set password.
+			redisPass=MyVerySecurePasswordPleaseChangeMe
+
+	bigbluebutton-html5
+		Find config.redis.password property in /usr/share/meteor/html5/app/config.js file and set password
+		    config.redis.password = "MyVerySecurePasswordPleaseChangeMe"
+
+
+
+ After all the above steps, do clean restart.
+ 	# sudo bbb-conf --clean

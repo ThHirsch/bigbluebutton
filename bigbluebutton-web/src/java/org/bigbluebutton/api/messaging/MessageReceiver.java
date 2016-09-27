@@ -24,6 +24,7 @@ public class MessageReceiver {
 	
 	private String host;
 	private int port;
+	private String pass;
 	
 	public void stop() {
 		receiveMessage = false;
@@ -32,10 +33,17 @@ public class MessageReceiver {
 	public void start() {
 		log.info("Ready to receive messages from Redis pubsub.");
 		try {
+			log.debug("Inside try block");
 			receiveMessage = true;
+
+			log.debug("Before jedis object creation pass is :"+pass);
 			jedis = new Jedis(host, port);
 			// Set the name of this client to be able to distinguish when doing
 			// CLIENT LIST on redis-cli
+			log.debug("Password is :"+pass);
+
+            String reply = jedis.auth(pass);
+			log.info("Jedis auth reply : {}",reply);
 			jedis.clientSetname("BbbWebSub");
 			
 			Runnable messageReceiver = new Runnable() {
@@ -53,7 +61,8 @@ public class MessageReceiver {
 			msgReceiverExec.execute(messageReceiver);
 		} catch (Exception e) {
 			log.error("Error subscribing to channels: " + e.getMessage());
-		}			
+		}
+		log.info("Successfully completed the method start()");
 	}
 	
 	public void setHost(String host){
@@ -63,6 +72,8 @@ public class MessageReceiver {
 	public void setPort(int port) {
 		this.port = port;
 	}
+
+	public void setPass(String pass){this.pass = pass;}
 	
 	public void setMessageHandler(ReceivedMessageHandler handler) {
 		this.handler = handler;

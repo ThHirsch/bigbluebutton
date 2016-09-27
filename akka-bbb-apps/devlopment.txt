@@ -1,0 +1,17 @@
+Package the project using following
+# sbt clean compile dist package
+
+Remove existing deployment
+# ﻿sudo rm -r /usr/share/bbb-apps-akka/
+
+Extract it
+# ﻿unzip target/universal/bbb-apps-akka-0.0.2.zip -d target/universal/
+
+Deploy it
+#﻿﻿sudo cp -r target/universal/bbb-apps-akka-0.0.2 /usr/share/bbb-apps-akka
+
+Assign permissions
+# ﻿sudo chown -R bigbluebutton:bigbluebutton /usr/share/bbb-apps-akka/
+
+
+

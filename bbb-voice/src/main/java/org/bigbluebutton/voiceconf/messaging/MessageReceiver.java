@@ -24,6 +24,7 @@ public class MessageReceiver {
 	
 	public void start() {
 		log.info("Ready to receive messages from Redis pubsub.");
+		log.info("in voice app");
 		try {
 			receiveMessage = true;
 			final Jedis jedis = redisPool.getResource();

@@ -20,15 +20,18 @@ Steps to get conferencing-web up with bigbluebutton custom-client
 			sudo /bin/systemctl enable elasticsearch.service
 
 		change clustername to conferencing-es in /etc/elasticsearch/elasticsearch.yml file by executing following command
-		    sed -i 's/^#cluster.name.*/cluster.name : conferencing-es/' /etc/elasticsearch/elasticsearch.yml
+		    sudo sed -i 's/^#cluster.name.*/cluster.name : conferencing-es/' /etc/elasticsearch/elasticsearch.yml
 
 		Start elasticsearch
 			sudo systemctl restart elasticsearch
 
+     To test that elasticsearch has successfully started
+        sudo systemctl status elasticsearch
 
 	 Install head plugin if required
 	 	Go to /usr/share/elasticsearch/bin and execute followign commmand
-		./plugin --install mobz/elasticsearch-head
+	 	cd /usr/share/elasticsearch/bin
+		sudo ./plugin --install mobz/elasticsearch-head
 
 3) Create mappings for users,conferences and joinlinks index. Just execute following commands in your terminal after elasticsearch is up and running.
 
@@ -108,19 +111,26 @@ curl -XPUT 'http://localhost:9200/joinlinks/' -d '{
 
 	You need to deploy war file in /var/lib/tomcat7/webapps/ directory
 
-   Now, each environment (LOCAL,DEV,QA,PROD) have its own configurations for elasticsearch,host,cluster-name,salt,protocol(http,https).
-   So these are placed in environment specific application-{{env}}.properties files.
-   Following are the properties file with specific environments
-        LOCAL - /var/lib/tomcat7/webapps/conferencing/WEB-INF/classes/application-local.properties
-        DEV - /var/lib/tomcat7/webapps/conferencing/WEB-INF/classes/application-dev.properties
-        QA - /var/lib/tomcat7/webapps/conferencing/WEB-INF/classes/application-qa.properties
-        PROD - /var/lib/tomcat7/webapps/conferencing/WEB-INF/classes/application-prod.properties
 
-   Set your default profile to prod by setting following property in /var/lib/tomcat7/webapps/conferencing/WEB-INF/classes/application.properties file. It will tell spring to take configurations from prod environment.
-   		spring.profiles.active = prod
+    Configure conferencing-web to select appropriate environment file
 
-	Change configurations according to your environment in /var/lib/tomcat7/webapps/conferencing/WEB-INF/classes/application-prod.properties.
+        I have created four files for different environments(LOCAL,DEV,QA,PROD) which are given bellow.
 
+          LOCAL - /var/lib/tomcat7/webapps/conferencing/WEB-INF/classes/application-local.properties
+          DEV - /var/lib/tomcat7/webapps/conferencing/WEB-INF/classes/application-dev.properties
+          QA - /var/lib/tomcat7/webapps/conferencing/WEB-INF/classes/application-qa.properties
+          PROD - /var/lib/tomcat7/webapps/conferencing/WEB-INF/classes/application-prod.properties
+
+        Using these files you can configure elasticsearch clustername, cluster nodes, bbb-url, protocol, and salt for your environment.
+
+        How conferencing-web select appropriate environment file at run time?
+          Appropriate environment file is selected at runtime by configuring spring.profiles.active property in /var/lib/tomcat7/webapps/conferencing/WEB-INF/classes/application.
+
+          For example, for selecting application-prod.properties file set spring.profiles.active property as bellow.
+            spring.profiles.active = prod
+          It means conferencing-web take application-prod.properties file at runtime.
+
+        So for delvag, change configurations of application-prod.properties file according to your environment. Now tell the conferencing-web to use application-prod.properties file by setting active profile in application.properties file as mentioned above.
 
 	Create nginx configuration for conferencing-web by executing following command
 
@@ -162,6 +172,7 @@ curl -XPUT 'http://localhost:9200/joinlinks/' -d '{
 5) Other nginx - configurations
 
 	  Open /etc/nginx/sites-available/bigbluebutton file and change configurations as said below
+	     sudo nano /etc/nginx/sites-available/bigbluebutton
 
 		 Add following lines above  "access_log  /var/log/nginx/bigbluebutton.access.log;" line
 
@@ -238,7 +249,7 @@ sudo systemctl restart nginx
 
 
 
-To Configure https in bigbluebutton.
+To Configure HTTPS in bigbluebutton.
     Follow steps given at following location to configure bigbluebutton with https.
               http://docs.bigbluebutton.org/install/install.html#configuring-https-on-bigbluebutton.
 
@@ -247,6 +258,22 @@ To Configure https in bigbluebutton.
 
     To Serve the bbb-html5 client over HTTPS, follow steps given at following location
         http://docs.bigbluebutton.org/html/html5-dev.html#serve-the-client-over-https
+
+
+To Configure password in Redis(CON-131)
+    Follow steps given in redis-hardening-deployment-info-with-bbb1.0.txt file which is in the same directory
+
+    For devlopers' note:
+        See the following documents which shows problems I faced while solving this issue and its solutions
+            https://github.com/ThHirsch/bigbluebutton/tree/v1.0.x-release/bigbluebutton-html5/devlopment.txt
+            https://github.com/ThHirsch/bigbluebutton/tree/v1.0.x-release/deskshare/devlopment.txt
+        Also solved one open issue
+            https://github.com/bigbluebutton/bigbluebutton/issues/3164
+
+
+Note : I have found that joining audio from html5 using Chrome not working. However using firefox I am able to connect audio from html5 client.
+
+
 
 
 
