@@ -4,7 +4,7 @@ Configure password on redis server
 Restart redis-server
 	#sudo service redis-server restart
 
-Deploy artficats
+Deploy artficats (Take artifacts from 10.10.111.151 machine)
 =================
 
 	akka-bbb-apps
